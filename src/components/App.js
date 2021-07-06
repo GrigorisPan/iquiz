@@ -15,7 +15,7 @@ import CreateQuiz from './pages/teacher/CreateQuiz';
 import DigitalClass from './pages/teacher/DigitalClass';
 import InfoClass from './pages/teacher/InfoClass';
 import Statistics from './pages/teacher/Statistics';
-const login = false;
+const login = true;
 const role = 'teacher';
 const route = () => {
   if (!login) {

@@ -1,5 +1,7 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { listQuizzes } from '../../../actions/quizActions';
 import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -15,8 +17,9 @@ import Typography from '@material-ui/core/Typography';
 import ButtonArrow from '../../ui/ButtonArrow';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-
+import Loader from '../../ui/Loader';
 import Button from '@material-ui/core/Button';
+import Message from '../../ui/Message';
 const useStyles = makeStyles((theme) => ({
   search: {
     padding: '2px 4px',
@@ -67,9 +70,12 @@ export default function Home() {
   const classes = useStyles();
   const theme = useTheme();
   const [searched, setSeached] = useState('');
+  const dispatch = useDispatch();
+
   const requestSearch = (searchValue) => {
     return;
   };
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const onCancelSearch = () => {
@@ -77,6 +83,21 @@ export default function Home() {
     requestSearch(searched);
   };
 
+  const quizList = useSelector((state) => state.quizList);
+  const { loading, error, quizzes } = quizList;
+
+  useEffect(() => {
+    dispatch(listQuizzes());
+  }, [dispatch]);
+
+  const displayDate = (timestamp) => {
+    const todate = new Date(timestamp).getDate();
+    const tomonth = new Date(timestamp).getMonth() + 1;
+    const toyear = new Date(timestamp).getFullYear();
+    const original_date = tomonth + '/' + todate + '/' + toyear;
+    return original_date;
+  };
+  console.log(error);
   return (
     <Grid container direction='column' spacing={3}>
       <Grid item container justify='center'>
@@ -96,52 +117,68 @@ export default function Home() {
         </Paper>
       </Grid>
       <Divider style={{ marginTop: '1em' }} />
-      <Grid
-        item
-        container
-        spacing={3}
-        justify='center'
-        style={{ marginTop: '1.8em' }}
-      >
-        {quiz.map((item, i) => (
-          <Grid item key={i} xs={12} sm={5} md={4} lg={3} xl={3}>
-            <Card className={classes.card}>
-              <CardMedia
-                className={classes.cardMedia}
-                image='https://source.unsplash.com/random'
-                title='Image title'
-              />
-              <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant='subtitle1' component='h2'>
-                  {item.title}
-                </Typography>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Grid container justify='center'>
+          <Message severity='error'>{error}</Message>
+        </Grid>
+      ) : (
+        <Grid
+          item
+          container
+          spacing={3}
+          justify='center'
+          style={{ marginTop: '1.8em' }}
+        >
+          {quizzes.map((item, i) => (
+            <Grid item key={i} xs={12} sm={5} md={4} lg={3} xl={3}>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.cardMedia}
+                  image='https://source.unsplash.com/random'
+                  title='Image title'
+                />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant='h6' component='h2'>
+                    {item.title}
+                  </Typography>
 
-                <Typography variant='h6' paragraph>
-                  {item.body}
-                </Typography>
-                <Typography variant='subtitle2'>
-                  Συγγραφέας:{' '}
-                  <span className={classes.specialText}>{item.user.name}</span>
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  className={classes.continueButton}
-                  component={Link}
-                  to={'teacher/quiz/1'}
-                >
-                  Περισότερα
-                  <ButtonArrow
-                    width={15}
-                    height={15}
-                    fill={theme.palette.common.blue}
-                  />
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  {/* <Typography variant='h6' paragraph>
+                  {item.description}
+                </Typography> */}
+                  <Typography variant='body2'>
+                    Συγγραφέας:{' '}
+                    <span className={classes.specialText}>
+                      {item.users_p.username}
+                    </span>
+                  </Typography>
+                  <Typography variant='subtitle2'>
+                    Ημερομηνία:{' '}
+                    <span className={classes.specialText}>
+                      {displayDate(item.createdAt)}
+                    </span>
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    className={classes.continueButton}
+                    component={Link}
+                    to={'teacher/quiz/1'}
+                  >
+                    Περισότερα
+                    <ButtonArrow
+                      width={15}
+                      height={15}
+                      fill={theme.palette.common.blue}
+                    />
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Grid>
   );
 }
