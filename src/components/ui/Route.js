@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDipatch, useDispatch } from 'react-redux';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -7,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { teacherRoutes, studentRoutes, mainRoutes } from './routes';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
+import Button from '@material-ui/core/Button';
+import { logout } from '../../actions/authActions';
 
 let routes = [];
 export default function Route(props) {
@@ -31,6 +34,8 @@ export default function Route(props) {
       }
     });
   }, [value, props]);
+
+  const dispatch = useDispatch();
 
   return (
     <React.Fragment>
@@ -82,6 +87,25 @@ export default function Route(props) {
             </ListItemText>
           </ListItem>
         ))}
+        <ListItem
+          key={'1500'}
+          button
+          selected={value === 1500}
+          classes={{ selected: props.classes.drawerItemSelected }}
+          onClick={() => {
+            props.setOpenDrawer(false);
+            props.setValue(1500);
+            dispatch(logout());
+          }}
+        >
+          <ListItemIcon>
+            <Icon>logout</Icon>
+          </ListItemIcon>
+          <ListItemText variant='body2' disableTypography>
+            {' '}
+            Αποσύνδεση
+          </ListItemText>
+        </ListItem>
       </List>
     </React.Fragment>
   );

@@ -7,7 +7,7 @@ export const teacherRoutes = [
   },
   {
     name: 'Βιβλιοθήκη',
-    link: '/teacher/library',
+    link: '/teacher/library/',
     icon: 'library_books',
     activeIndex: 1,
   },
@@ -49,10 +49,10 @@ export const studentRoutes = [
 
 export const mainRoutes = [
   { name: 'Προφίλ', link: '/profile', icon: 'manage_accounts', activeIndex: 5 },
-  {
+  /*   {
     name: 'Αποσύνδεση',
     link: '/logout',
     icon: 'logout',
     activeIndex: 1500,
-  },
+  }, */
 ];

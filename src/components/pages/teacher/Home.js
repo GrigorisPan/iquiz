@@ -85,6 +85,7 @@ export default function Home() {
 
   const quizList = useSelector((state) => state.quizList);
   const { loading, error, quizzes } = quizList;
+  console.log(quizzes);
 
   useEffect(() => {
     dispatch(listQuizzes());
@@ -97,7 +98,7 @@ export default function Home() {
     const original_date = tomonth + '/' + todate + '/' + toyear;
     return original_date;
   };
-  console.log(error);
+
   return (
     <Grid container direction='column' spacing={3}>
       <Grid item container justify='center'>
@@ -164,7 +165,7 @@ export default function Home() {
                   <Button
                     className={classes.continueButton}
                     component={Link}
-                    to={'teacher/quiz/1'}
+                    to={`teacher/quiz/${item.id}`}
                   >
                     Περισότερα
                     <ButtonArrow

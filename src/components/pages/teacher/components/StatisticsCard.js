@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core';
-
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Icon } from '@material-ui/core';
@@ -13,6 +13,7 @@ import CardContent from '@material-ui/core/CardContent';
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '100%',
+    marginBottom: '2em',
   },
   specialText: {
     color: theme.palette.common.orange,
@@ -27,15 +28,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function StatisticsCard() {
+export default function StatisticsCard(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [reports, setReports] = useState(false);
+  const [reportsShow, setReportsShow] = useState(false);
+  const reports = props.statistic.reports;
+  const hasReports = reports.length === 0 ? false : true;
 
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const reportsHandler = () => {
-    setReports((prevState) => !prevState);
+    setReportsShow((prevState) => !prevState);
+  };
+
+  const displayDate = (timestamp) => {
+    const todate = new Date(timestamp).getDate();
+    const tomonth = new Date(timestamp).getMonth() + 1;
+    const toyear = new Date(timestamp).getFullYear();
+    const original_date = tomonth + '/' + todate + '/' + toyear;
+    return original_date;
   };
 
   return (
@@ -46,16 +57,8 @@ export default function StatisticsCard() {
             <Grid item container direction='column'>
               <CardContent>
                 <Grid item align={matchesXS ? 'center' : ''}>
-                  <Typography gutterBottom variant='subtitle1' component='h2'>
-                    Computer
-                  </Typography>
-
                   <Typography variant='h6' paragraph>
-                    The Best Computer quiz
-                  </Typography>
-                  <Typography variant='subtitle2'>
-                    Συγγραφέας:{' '}
-                    <span className={classes.specialText}>John Doe</span>
+                    {props.statistic.title}
                   </Typography>
                 </Grid>
               </CardContent>
@@ -66,25 +69,34 @@ export default function StatisticsCard() {
               <CardContent>
                 <Grid item>
                   <Typography gutterBottom variant='subtitle2'>
-                    Χρήστες: <span className={classes.specialText2}>3</span>
+                    Χρήστες:{' '}
+                    <span className={classes.specialText2}>
+                      {props.statistic.count_play_users}
+                    </span>
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom variant='subtitle2'>
                     ΜΟ Βαθμολογίας:{' '}
-                    <span className={classes.specialText2}>50</span>
+                    <span className={classes.specialText2}>
+                      {props.statistic.score_avg}
+                    </span>
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom variant='subtitle2'>
                     ΜΟ Σωστών Απ.:{' '}
-                    <span className={classes.specialText2}>8</span>
+                    <span className={classes.specialText2}>
+                      {props.statistic.correct_avg}
+                    </span>
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom variant='subtitle2'>
                     ΜΟ Λανθασμένων Απ.:{' '}
-                    <span className={classes.specialText2}>8</span>
+                    <span className={classes.specialText2}>
+                      {props.statistic.false_avg}
+                    </span>
                   </Typography>
                 </Grid>
                 <Grid item container alignItems='center'>
@@ -93,22 +105,27 @@ export default function StatisticsCard() {
                     variant='subtitle2'
                     style={{ paddingRight: '1em' }}
                   >
-                    Αναφορές: <span className={classes.specialText2}>1</span>
+                    Αναφορές:{' '}
+                    <span className={classes.specialText2}>
+                      {hasReports ? props.statistic.reports.length : 0}
+                    </span>
                   </Typography>
-                  <Button
-                    onClick={reportsHandler}
-                    style={{ marginLeft: '1em' }}
-                  >
-                    <Icon>
-                      <span class='material-icons-outlined'>expand_more</span>
-                    </Icon>
-                  </Button>
+                  {hasReports && (
+                    <Button
+                      onClick={reportsHandler}
+                      style={{ marginLeft: '1em' }}
+                    >
+                      <Icon>
+                        <span class='material-icons-outlined'>expand_more</span>
+                      </Icon>
+                    </Button>
+                  )}
                 </Grid>
               </CardContent>
             </Grid>
           </Grid>
         </Grid>
-        {reports && (
+        {reportsShow && (
           <CardContent>
             <Typography
               gutterBottom
@@ -123,36 +140,35 @@ export default function StatisticsCard() {
                 marginTop: '1em',
               }}
             />
-            <Grid item container direction='row' justify='center'>
-              <Grid item>
-                <Typography
-                  gutterBottom
-                  variant='body2'
-                  style={{ paddingRight: '1em' }}
-                >
-                  Χρήστης: <span className={classes.specialText}>Γρηγόρης</span>
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography
-                  gutterBottom
-                  variant='body2'
-                  style={{ paddingRight: '1em' }}
-                >
-                  Αρ. Ερωτήσεων: <span className={classes.specialText}>8</span>
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography
-                  gutterBottom
-                  variant='body2'
-                  style={{ paddingRight: '1em' }}
-                >
-                  Ημερομηνία:{' '}
-                  <span className={classes.specialText}>17/05/2021</span>
-                </Typography>
-              </Grid>
-            </Grid>
+            {reports &&
+              reports.map((report) => (
+                <Grid item container direction='row' justify='center'>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant='body2'
+                      style={{ paddingRight: '1em' }}
+                    >
+                      Αρ. Ερώτησης:{' '}
+                      <span className={classes.specialText}>
+                        {report.question_num}
+                      </span>
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant='body2'
+                      style={{ paddingRight: '1em' }}
+                    >
+                      Ημερομηνία:{' '}
+                      <span className={classes.specialText}>
+                        {displayDate(report.createdAt)}
+                      </span>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              ))}
           </CardContent>
         )}
       </Card>
