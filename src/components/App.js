@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { ThemeProvider } from '@material-ui/styles';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -13,12 +13,14 @@ import Login from './pages/public/Login';
 import Layout from './ui/Layout';
 import Home from './pages/teacher/Home';
 import InfoQuiz from './pages/teacher/InfoQuiz';
-import CreateQuiz from './pages/teacher/CreateQuiz';
+import QuizCreate from './pages/teacher/QuizCreate';
 import Library from './pages/teacher/Library';
 import DigitalClass from './pages/teacher/DigitalClass';
 import InfoClass from './pages/teacher/InfoClass';
 import Statistics from './pages/teacher/Statistics';
 import { Redirect } from 'react-router';
+import Profile from './pages/teacher/Profile';
+import EditQuiz from './pages/teacher/EditQuiz';
 let login = false;
 const role = 'teacher';
 
@@ -36,7 +38,7 @@ function App() {
       return (
         <React.Fragment>
           <Header />
-          <Redirect to='/' />
+
           <Switch>
             <Route exact path='/'>
               <LandingPage />
@@ -48,6 +50,7 @@ function App() {
               <Login />
             </Route>
             <Route exact path='/contact' component={() => <div>Contact</div>} />
+            <Redirect to='/' />
           </Switch>
           <Footer />
         </React.Fragment>
@@ -56,7 +59,6 @@ function App() {
       return (
         <React.Fragment>
           <Layout role={role}>
-            <Redirect to='/teacher' />
             <Switch>
               <Route exact path='/teacher'>
                 <Home />
@@ -65,10 +67,13 @@ function App() {
                 <InfoQuiz match={URL.match} />
               </Route>
               <Route exact path='/teacher/create-quiz'>
-                <CreateQuiz />
+                <QuizCreate />
               </Route>
               <Route exact path='/teacher/library/'>
                 <Library />
+              </Route>
+              <Route exact path='/teacher/library/edit/:id'>
+                <EditQuiz match={URL.match} />
               </Route>
               <Route exact path='/teacher/digiClass'>
                 <DigitalClass />
@@ -79,6 +84,10 @@ function App() {
               <Route exact path='/teacher/statistics'>
                 <Statistics />
               </Route>
+              <Route exact path='/teacher/profile'>
+                <Profile />
+              </Route>
+              <Redirect to='/teacher' />
             </Switch>
           </Layout>
         </React.Fragment>

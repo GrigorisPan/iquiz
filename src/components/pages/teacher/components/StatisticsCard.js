@@ -116,7 +116,9 @@ export default function StatisticsCard(props) {
                       style={{ marginLeft: '1em' }}
                     >
                       <Icon>
-                        <span class='material-icons-outlined'>expand_more</span>
+                        <span className='material-icons-outlined'>
+                          expand_more
+                        </span>
                       </Icon>
                     </Button>
                   )}
@@ -142,7 +144,13 @@ export default function StatisticsCard(props) {
             />
             {reports &&
               reports.map((report) => (
-                <Grid item container direction='row' justify='center'>
+                <Grid
+                  item
+                  key={report.question_num}
+                  container
+                  direction='row'
+                  justify='center'
+                >
                   <Grid item>
                     <Typography
                       gutterBottom

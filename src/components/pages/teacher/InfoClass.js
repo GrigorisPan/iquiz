@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
@@ -18,28 +22,21 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import List from '@material-ui/core/List';
 
+import { listSuggestQuiz } from '../../../actions/suggestAction';
+import { getScore } from '../../../actions/statisticsAction';
+import { getUsersInClass } from '../../../actions/statisticsAction';
+import { getDigitalClass } from '../../../actions/digitalClassActions';
+import Message from '../../ui/Message';
+import Loader from '../../ui/Loader';
+
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     minHeight: '88vh',
   },
-  loginButton: {
-    ...theme.typography.mainButton,
-    borderRadius: '50px',
-    width: '240px',
-    height: '40px',
-    alignItems: 'center',
-    backgroundColor: theme.palette.common.orange,
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  },
   specialText: {
     color: theme.palette.common.orange,
   },
-  button: {
-    ...theme.typography.secondaryButton,
-    color: theme.palette.common.blue,
-  },
+
   root: {
     maxWidth: '70%',
     padding: theme.spacing(2),
@@ -56,161 +53,198 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(user, score, quiz_num) {
-  return { user, score, quiz_num };
+function createData(user, score, play_count) {
+  return { user, score, play_count };
 }
-
-const rows = [
-  createData('Γρηγόρης', 500, 5),
-  createData('Ακης', 450, 6),
-  createData('Ιωάννα', 350, 5),
-  createData('Δημήτρης', 150, 5),
-];
 
 export default function InfoClass() {
   const classes = useStyles();
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('sm'));
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  let history = useHistory();
+
+  const digitalClass = useSelector((state) => state.digitalClass);
+  const { loading, error, dClass } = digitalClass;
+
+  const quizSuggest = useSelector((state) => state.quizSuggest);
+  const { suggest } = quizSuggest;
+
+  const scoreTable = useSelector((state) => state.scoreTable);
+  const { score } = scoreTable;
+
+  const usersInClass = useSelector((state) => state.usersInClass);
+  const { users } = usersInClass;
+
+  let usersTable = [];
+  usersTable = score.map((user) =>
+    createData(user.username, user.score, user.play_count)
+  );
+
+  useEffect(() => {
+    if (!error) {
+      dispatch(getDigitalClass(id));
+      dispatch(getUsersInClass(id));
+      dispatch(listSuggestQuiz(id));
+      dispatch(getScore(id));
+    }
+    if (error) {
+      setTimeout(() => {
+        history.push('/teacher/digiClass', { from: 'digiClass/:id' });
+      }, 1000);
+    }
+  }, [dispatch, id, history, error]);
+
   return (
     <Grid container direction='column' className={classes.mainContainer}>
-      <Grid item container justify='center' className={classes.container}>
-        <Card className={classes.root}>
-          <Grid item container direction='row'>
-            <Grid item sm={matchesXS ? '7' : '10'}>
-              <Grid item container direction='column'>
-                <CardContent>
-                  <Grid item>
-                    <Typography gutterBottom variant='h6'>
-                      Πληροφορική
-                    </Typography>
-                    <Typography gutterBottom variant='subtitle2'>
-                      Εκπαιδευτικός <br />
-                      <span className={classes.specialText}>
-                        Grigoris Panagiotopoulos
-                      </span>
-                    </Typography>
-                    <Hidden smDown>
-                      <Typography gutterBottom variant='subtitle2'>
-                        Περιγραφή: <br /> They should be easy to scan for
-                        relevant and actionable information. Elements, like text
-                        and images, should be placed on them in a way that
-                        clearly indicates hierarchy.
-                      </Typography>
-                    </Hidden>
-                  </Grid>
-                </CardContent>
-              </Grid>
-            </Grid>
-            <Grid item sm={matchesXS ? '5' : '2'}>
-              <Grid item container direction='column' alignItems='flex-end'>
-                <CardContent>
-                  <Grid item>
-                    <ListItemIcon
-                      style={{ marginRight: '0.5em', fontSize: '1em' }}
-                    >
-                      <Icon
-                        style={{
-                          marginRight: '0.5em',
-                          fontSize: '1.5em',
-                        }}
-                      >
-                        person
-                      </Icon>
-                      <span className={classes.specialText}>12</span>
-                    </ListItemIcon>
-                  </Grid>
-                  <Grid item>
-                    <Typography gutterBottom variant='subtitle2'>
-                      Κωδικός: <span className={classes.specialText}>3</span>
-                    </Typography>
-                  </Grid>
-                </CardContent>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Card>
-      </Grid>
-
-      <Grid item style={{ marginTop: '5em' }}>
-        <Grid item container direction='row'>
-          <Grid item xs={12} sm={12} md={4}>
-            <Grid item container direction='column'>
-              <Grid item align='center'>
-                <List>
-                  <Typography
-                    component='h2'
-                    variant='h6'
-                    color='primary'
-                    gutterBottom
-                  >
-                    Προτεινόμενα Κουίζ
-                  </Typography>
-                  <Divider />
-                  <ListItem>
-                    <Typography gutterBottom variant='subtitle2'>
-                      Προτεινόμενα Κουίζ
-                    </Typography>
-                  </ListItem>
-                  <Divider />
-                  <ListItem>
-                    <Typography gutterBottom variant='subtitle2'>
-                      Προτεινόμενα Κουίζ
-                    </Typography>
-                  </ListItem>
-                  <Divider />
-                  <ListItem>
-                    <Typography gutterBottom variant='subtitle2'>
-                      Προτεινόμενα Κουίζ
-                    </Typography>
-                  </ListItem>
-                  <Divider />
-                </List>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12} md={7}>
-            <Grid
-              item
-              container
-              direction='column'
-              alignItems={matchesXS ? 'center' : 'flex-end'}
-            >
-              <Grid item align='center'>
-                <Typography
-                  component='h2'
-                  variant='h6'
-                  color='primary'
-                  gutterBottom
-                >
-                  Βαθμολογική Κατάταξη
-                </Typography>
-                <TableContainer>
-                  <Table className={classes.table} aria-label='simple table'>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Χρήστης</TableCell>
-                        <TableCell align='right'>Βαθμολογία</TableCell>
-                        <TableCell align='right'>Αρ. Κουίζ</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow key={row.user}>
-                          <TableCell component='th' scope='row'>
-                            {row.user}
-                          </TableCell>
-                          <TableCell align='right'>{row.score}</TableCell>
-                          <TableCell align='right'>{row.quiz_num}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
-            </Grid>
-          </Grid>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Grid container justify='center'>
+          <Message severity='error'>{error}</Message>
         </Grid>
-      </Grid>
+      ) : (
+        <>
+          <Grid item container justify='center' className={classes.container}>
+            <Card className={classes.root}>
+              <Grid item container direction='row'>
+                <Grid item sm={matchesXS ? 6 : 9}>
+                  <Grid item container direction='column'>
+                    <CardContent>
+                      <Grid item>
+                        <Typography gutterBottom variant='h6'>
+                          {dClass.title}
+                        </Typography>
+                        <Typography gutterBottom variant='subtitle2'>
+                          Εκπαιδευτικός <br />
+                          <span className={classes.specialText}>
+                            Grigoris Panagiotopoulos
+                          </span>
+                        </Typography>
+                        <Hidden smDown>
+                          <Typography gutterBottom variant='subtitle2'>
+                            {dClass.description}
+                          </Typography>
+                        </Hidden>
+                      </Grid>
+                    </CardContent>
+                  </Grid>
+                </Grid>
+                <Grid item sm={matchesXS ? 6 : 3}>
+                  <Grid item container direction='column' alignItems='flex-end'>
+                    <CardContent>
+                      <Grid item>
+                        <ListItemIcon
+                          style={{ marginRight: '0.5em', fontSize: '1em' }}
+                        >
+                          <Icon
+                            style={{
+                              marginRight: '0.5em',
+                              fontSize: '1.5em',
+                            }}
+                          >
+                            person
+                          </Icon>
+                          <span className={classes.specialText}>
+                            {users.count}
+                          </span>
+                        </ListItemIcon>
+                      </Grid>
+                      <Grid item>
+                        <Typography gutterBottom variant='subtitle2'>
+                          Κωδικός:{' '}
+                          <span className={classes.specialText}>
+                            {dClass.id}
+                          </span>
+                        </Typography>
+                      </Grid>
+                    </CardContent>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+
+          <Grid item style={{ marginTop: '5em' }}>
+            <Grid item container direction='row'>
+              <Grid item xs={12} sm={12} md={4}>
+                <Grid item container direction='column'>
+                  <Grid item align='center'>
+                    <List>
+                      <Typography
+                        component='h2'
+                        variant='h6'
+                        color='primary'
+                        gutterBottom
+                      >
+                        Προτεινόμενα Κουίζ
+                      </Typography>
+                      <Divider />
+                      {suggest.map((quiz) => (
+                        <>
+                          <ListItem key={quiz.quiz_id}>
+                            <Typography gutterBottom variant='subtitle2'>
+                              {quiz.quiz_p.title} - ID: {quiz.quiz_id}
+                            </Typography>
+                          </ListItem>
+                          <Divider />
+                        </>
+                      ))}
+                    </List>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={12} md={7}>
+                <Grid
+                  item
+                  container
+                  direction='column'
+                  alignItems={matchesXS ? 'center' : 'flex-end'}
+                >
+                  <Grid item align='center'>
+                    <Typography
+                      component='h2'
+                      variant='h6'
+                      color='primary'
+                      gutterBottom
+                    >
+                      Βαθμολογική Κατάταξη
+                    </Typography>
+                    <TableContainer>
+                      <Table
+                        className={classes.table}
+                        aria-label='simple table'
+                      >
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Χρήστης</TableCell>
+                            <TableCell align='right'>Βαθμολογία</TableCell>
+                            <TableCell align='right'>Αρ. Κουίζ</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {usersTable.map((user) => (
+                            <TableRow key={user.user.username}>
+                              <TableCell component='th' scope='row'>
+                                {user.user}
+                              </TableCell>
+                              <TableCell align='right'>{user.score}</TableCell>
+                              <TableCell align='right'>
+                                {user.play_count}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }

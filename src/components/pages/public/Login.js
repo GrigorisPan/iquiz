@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import { login } from '../../../actions/authActions';
+import { login, loginClean } from '../../../actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, TextField, Button } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -60,11 +59,22 @@ export default function Login({ history, location }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [show, setShow] = useState('');
 
   const dispatch = useDispatch();
 
   const authLogin = useSelector((state) => state.authLogin);
-  const { loading, error, userInfo } = authLogin;
+  const { loading, error } = authLogin;
+
+  useEffect(() => {
+    if (error) {
+      setShow('true');
+      setTimeout(() => {
+        setShow('false');
+        dispatch(loginClean());
+      }, 1500);
+    }
+  }, [dispatch, error, show]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -82,6 +92,11 @@ export default function Login({ history, location }) {
         alignItems='center'
         className={classes.container}
       >
+        {error && (
+          <Grid item container justify='center' style={{ marginBottom: '1em' }}>
+            <Message severity='error'>{error}</Message>
+          </Grid>
+        )}
         <Grid
           item
           container
@@ -90,16 +105,6 @@ export default function Login({ history, location }) {
           sm={12}
           className={classes.mainContainer}
         >
-          {error && (
-            <Grid
-              item
-              container
-              justify='center'
-              style={{ marginBottom: '1em' }}
-            >
-              <Message severity='error'>{error}</Message>
-            </Grid>
-          )}
           <Grid item>
             {/* Φόρμα εισόδου */}
             <Grid

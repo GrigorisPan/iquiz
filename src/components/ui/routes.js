@@ -48,7 +48,12 @@ export const studentRoutes = [
 ];
 
 export const mainRoutes = [
-  { name: 'Προφίλ', link: '/profile', icon: 'manage_accounts', activeIndex: 5 },
+  {
+    name: 'Προφίλ',
+    link: '/teacher/profile',
+    icon: 'manage_accounts',
+    activeIndex: 5,
+  },
   /*   {
     name: 'Αποσύνδεση',
     link: '/logout',

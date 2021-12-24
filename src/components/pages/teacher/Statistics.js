@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { teacherStatistics } from '../../../actions/statisticsAction';
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import { teacherStatistics } from '../../../actions/statisticsAction';
+import StatisticsCard from './components/StatisticsCard';
 import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
 
-import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import StatisticsCard from './components/StatisticsCard';
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     minHeight: '100vh',
@@ -22,21 +23,20 @@ const useStyles = makeStyles((theme) => ({
 export default function Statistics() {
   const classes = useStyles();
   const theme = useTheme();
-  const [reports, setReports] = useState(false);
   const dispatch = useDispatch();
 
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const reportsHandler = () => {
-    setReports((prevState) => !prevState);
-  };
-
   const quizStatistics = useSelector((state) => state.quizStatistics);
-  const { loading, error, statistics } = quizStatistics;
+  const authLogin = useSelector((state) => state.authLogin);
 
+  const { loading, error, statistics } = quizStatistics;
+  const { userInfo } = authLogin;
+
+  const user_id = userInfo.id;
   useEffect(() => {
-    dispatch(teacherStatistics(1));
-  }, [dispatch]);
+    dispatch(teacherStatistics(user_id));
+  }, [dispatch, user_id]);
 
   return (
     <Grid

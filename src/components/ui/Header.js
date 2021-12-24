@@ -185,7 +185,7 @@ export default function Header(props) {
               to={route.link}
               selected={value === route.activeIndex}
               classes={{ selected: classes.drawerItemSelected }}
-              onClick={() => {
+              onClick={(e) => {
                 setOpenDrawer(false);
                 setValue(route.activeIndex);
               }}
@@ -199,7 +199,7 @@ export default function Header(props) {
       </SwipeableDrawer>
       <IconButton
         className={classes.drawerIconContainer}
-        onClick={() => setOpenDrawer(!openDrawer)}
+        onClick={(e) => setOpenDrawer(!openDrawer)}
         disableRipple
       >
         <MenuIcon className={classes.drawerIcon} />
@@ -217,7 +217,7 @@ export default function Header(props) {
               to='/'
               disableRipple
               className={classes.logoContainer}
-              onClick={() => setValue(0)}
+              onClick={(e) => setValue(0)}
             >
               <img alt='logo' className={classes.logo} src={logo} />
             </Button>

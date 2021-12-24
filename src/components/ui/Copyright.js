@@ -7,7 +7,7 @@ export default function Copyright() {
     <Typography variant='subtitle2' color='textSecondary' align='center'>
       {'Copyright © '}
       <Link color='inherit' href='https://material-ui.com/'>
-        Your Website
+        iQuiz
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

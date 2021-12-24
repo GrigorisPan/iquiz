@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { register, registerClean } from '../../../actions/authActions';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { TextField, Button, FormControl } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core';
@@ -7,6 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Message from '../../ui/Message';
+import Loader from '../../ui/Loader';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,10 +49,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LandingPage() {
+export default function Signup() {
   const classes = useStyles();
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+
+  const [type, setType] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [show, setShow] = useState('false');
+
+  const authRegister = useSelector((state) => state.authRegister);
+  const { loading, error } = authRegister;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (error) {
+      setShow('true');
+      setTimeout(() => {
+        setShow('false');
+        dispatch(registerClean());
+      }, 1500);
+    }
+  }, [dispatch, error, show]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage('Οι κωδικοί πρόσβασης δεν ταιριάζουν.');
+      setShow(true);
+      setTimeout(() => setShow(false), 2000);
+    } else {
+      dispatch(register(username, email, type, password));
+    }
+  };
   return (
     <Grid
       container
@@ -55,6 +94,16 @@ export default function LandingPage() {
       alignItems='center'
       className={classes.container}
     >
+      {show && message && (
+        <Grid item container justify='center' style={{ marginBottom: '1em' }}>
+          <Message severity='warning'>{message}</Message>
+        </Grid>
+      )}
+      {show && error && (
+        <Grid item container justify='center' style={{ marginBottom: '1em' }}>
+          <Message severity='error'>{error}</Message>
+        </Grid>
+      )}
       <Grid
         item
         container
@@ -81,62 +130,82 @@ export default function LandingPage() {
         </Grid>
         <Grid item>
           <Grid item container direction='column'>
-            <Grid item>
-              <FormControl className={classes.formControl}>
-                <InputLabel id='type-user-select-label'>
-                  Κατηγορία χρήστη
-                </InputLabel>
-                <Select labelId='type-user-select-label' id='user-select'>
-                  <MenuItem>Εκπαιδευτικός</MenuItem>
-                  <MenuItem>Εκπαιδευόμενος</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item>
-              <TextField
-                label='Όνομα χρήστη'
-                id='name'
-                style={{ marginTop: '1.3em' }}
-                autoComplete='false'
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                label='Ηλεκτρονικό ταχυδρομείο'
-                id='email'
-                style={{ marginTop: '1.3em' }}
-                fullWidth
-                autoComplete='false'
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                label='Κωδικός'
-                id='password'
-                style={{ marginTop: '1.3em' }}
-                fullWidth
-                type='password'
-                autoComplete='false'
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                label='Επιβεβαίωση κωδικού'
-                id='Confirm Password'
-                style={{ marginTop: '1.3em' }}
-                fullWidth
-                type='password'
-                autoComplete='false'
-              />
-            </Grid>
-            <Grid item>
-              <Grid item container justify='center'>
-                <Button variant='contained' className={classes.signButton}>
-                  Sign Up
-                </Button>
+            <form onSubmit={submitHandler}>
+              <Grid item>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id='type-user-select-label' required='true'>
+                    Κατηγορία χρήστη
+                  </InputLabel>
+                  <Select
+                    labelId='user-role-select-label'
+                    id='role-select'
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                  >
+                    <MenuItem value={2}>Εκπαιδευτικός</MenuItem>
+                    <MenuItem value={0}>Εκπαιδευόμενος</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
-            </Grid>
+              <Grid item>
+                <TextField
+                  label='Όνομα χρήστη'
+                  id='name'
+                  required={true}
+                  style={{ marginTop: '1.3em' }}
+                  autoComplete='false'
+                  fullWidth
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  label='Ηλεκτρονικό ταχυδρομείο'
+                  id='email'
+                  required={true}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ marginTop: '1.3em' }}
+                  fullWidth
+                  autoComplete='false'
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  label='Κωδικός'
+                  id='password'
+                  required={true}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ marginTop: '1.3em' }}
+                  fullWidth
+                  type='password'
+                  autoComplete='false'
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  label='Επιβεβαίωση κωδικού'
+                  id='Confirm Password'
+                  required={true}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  style={{ marginTop: '1.3em' }}
+                  fullWidth
+                  type='password'
+                  autoComplete='false'
+                />
+              </Grid>
+              <Grid item>
+                <Grid item container justify='center'>
+                  {loading && <Loader />}
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    className={classes.signButton}
+                  >
+                    Εγγραφή
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
           </Grid>
         </Grid>
       </Grid>

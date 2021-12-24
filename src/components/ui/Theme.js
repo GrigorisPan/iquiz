@@ -132,7 +132,6 @@ export default createMuiTheme({
         },
       },
     },
-
     /*    MuiStepper: {
       horizontal: { flexDirection: 'row' },
     }, */

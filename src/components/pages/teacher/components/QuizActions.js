@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -8,6 +10,9 @@ import { Icon } from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { Button } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import { listDclassSuggest } from '../../../../actions/suggestAction';
+import SuggestModal from './SuggestModal';
 
 const useStyles = makeStyles((theme) => ({
   continueButton: {
@@ -34,11 +39,30 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     flexDirection: 'column',
   },
+  specialText: {
+    color: theme.palette.common.orange,
+  },
 }));
 
-export default function QuizActions() {
+export default function QuizActions(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const quizDetails = useSelector((state) => state.quizDetails);
+  const quiz_id = quizDetails.quiz.id;
+
+  const dispatch = useDispatch();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
+  };
 
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   return (
@@ -94,13 +118,26 @@ export default function QuizActions() {
               </ListItemIcon>
             </Grid>
             <Grid item xs={12} sm={12} md={7}>
-              <Button variant='contained' className={classes.continueButton}>
+              <Button
+                variant='contained'
+                className={classes.continueButton}
+                onClick={() => {
+                  handleClickOpen();
+                  dispatch(listDclassSuggest(quiz_id));
+                }}
+              >
                 Ορισμός ως Προτεινόμενο
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Paper>
+      <SuggestModal
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+        quiz_id={quiz_id}
+      />
     </Grid>
   );
 }

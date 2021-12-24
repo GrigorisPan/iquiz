@@ -1,66 +1,44 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Icon } from '@material-ui/core';
-
-import { listQuizzes } from '../../../actions/quizActions';
 import { Grid } from '@material-ui/core';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import ButtonArrow from '../../ui/ButtonArrow';
 import Divider from '@material-ui/core/Divider';
-import { Link } from 'react-router-dom';
-import Loader from '../../ui/Loader';
 import Button from '@material-ui/core/Button';
+
+import {
+  listLibraryQuizzes,
+  quizDelete,
+  listLibraryQuizDetailsClean,
+} from '../../../actions/quizActions';
 import Message from '../../ui/Message';
+import DeleteModal from '../teacher/components/DeleteModal';
+import { Pagination } from '../../ui/Pagination';
+import Loader from '../../ui/Loader';
+
 const useStyles = makeStyles((theme) => ({
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: 400,
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'hidden',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
   card: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    //paddingTop: '56.25%', // 16:9
+    paddingTop: '75%', // 16:9
   },
   cardContent: {
     flexGrow: 1,
   },
   specialText: {
     color: theme.palette.common.orange,
-  },
-  continueButton: {
-    ...theme.typography.secondaryButton,
-    borderColor: theme.palette.common.blue,
-    color: theme.palette.common.blue,
-    height: 40,
-    width: 145,
   },
   editButton: {
     backgroundColor: '#4caf50',
@@ -70,36 +48,40 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   deleteButton: {
+    ...theme.typography.mainButton,
     backgroundColor: '#ff1744',
     color: '#ffff',
     '&:hover': {
       backgroundColor: '#ff4569',
     },
   },
+  button: {
+    ...theme.typography.secondaryButton,
+    color: theme.palette.common.blue,
+  },
 }));
 
 export default function Library({ match }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [searched, setSeached] = useState('');
-  const dispatch = useDispatch();
-  const user_id = 1;
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
-  const requestSearch = (searchValue) => {
-    return;
-  };
 
-  const onCancelSearch = () => {
-    setSeached('');
-    requestSearch(searched);
-  };
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
+  const [show, setShow] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
-  const quizList = useSelector((state) => state.quizList);
-  const { loading, error, quizzes } = quizList;
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(listQuizzes());
-  }, [dispatch]);
+  const quizLibraryList = useSelector((state) => state.quizLibraryList);
+  const { loading, error, quizzes } = quizLibraryList;
+
+  const authLogin = useSelector((state) => state.authLogin);
+  const { userInfo } = authLogin;
+
+  const quizDeleted = useSelector((state) => state.quizDeleted);
+  const { success: successDelete, error: errorDelete } = quizDeleted;
 
   const displayDate = (timestamp) => {
     const todate = new Date(timestamp).getDate();
@@ -107,6 +89,43 @@ export default function Library({ match }) {
     const toyear = new Date(timestamp).getFullYear();
     const original_date = tomonth + '/' + todate + '/' + toyear;
     return original_date;
+  };
+
+  useEffect(() => {
+    dispatch(listLibraryQuizzes());
+    return () => {
+      dispatch(listLibraryQuizDetailsClean());
+    };
+  }, [dispatch, successDelete, errorDelete]);
+
+  //Delete function
+  const deleteHandler = (id) => {
+    dispatch(quizDelete(id));
+    setShow(true);
+    setOpen(false);
+    setTimeout(() => {
+      setShow(false);
+    }, 1000);
+  };
+
+  // Get current quiz
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentQuizzes = quizzes.slice(indexOfFirst, indexOfLast);
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+      setDeleteId(0);
+    }
   };
 
   return (
@@ -126,6 +145,16 @@ export default function Library({ match }) {
         </Grid>
       </Grid>
       <Divider style={{ marginTop: '1em' }} />
+      {show && successDelete && (
+        <Grid container justify='center'>
+          <Message severity='success'>Επιτυχής διαγραφή!</Message>
+        </Grid>
+      )}
+      {show && errorDelete && (
+        <Grid container justify='center'>
+          <Message severity='error'>{error}</Message>
+        </Grid>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -133,78 +162,109 @@ export default function Library({ match }) {
           <Message severity='error'>{error}</Message>
         </Grid>
       ) : (
-        <Grid
-          item
-          container
-          spacing={3}
-          justify='center'
-          style={{ marginTop: '1.8em' }}
-        >
-          {quizzes.map(
-            (item, i) =>
-              item.user_id === user_id && (
-                <Grid item key={i} xs={12} sm={5} md={4} lg={3} xl={3}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image='https://source.unsplash.com/random'
-                      title='Image title'
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant='h6' component='h2'>
-                        {item.title}
-                      </Typography>
+        <>
+          <DeleteModal
+            open={open}
+            setDeleteId={setDeleteId}
+            setOpen={setOpen}
+            deleteHandler={deleteHandler}
+            deleteId={deleteId}
+            handleClose={handleClose}
+          />
+          <Grid
+            item
+            container
+            spacing={3}
+            justify='center'
+            style={{ marginTop: '1.8em' }}
+          >
+            {currentQuizzes.map(
+              (item, i) =>
+                item.user_id === userInfo.id && (
+                  <Grid item key={i} xs={12} sm={5} md={4} lg={3} xl={3}>
+                    <Card className={classes.card}>
+                      <CardMedia
+                        className={classes.cardMedia}
+                        image={`http://localhost:5000/uploads/${item.photo}`}
+                        title='Image title'
+                      />
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant='h6' component='h2'>
+                          {item.title}
+                        </Typography>
 
-                      {/* <Typography variant='h6' paragraph>
+                        {/* <Typography variant='h6' paragraph>
                   {item.description}
                 </Typography> */}
-                      <Typography variant='body2'>
-                        Συγγραφέας:{' '}
-                        <span className={classes.specialText}>
-                          {item.users_p.username}
-                        </span>
-                      </Typography>
-                      <Typography variant='subtitle2'>
-                        Ημερομηνία:{' '}
-                        <span className={classes.specialText}>
-                          {displayDate(item.createdAt)}
-                        </span>
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Grid
-                        item
-                        container
-                        direction='row'
-                        justify='space-between'
-                        alignItems='center'
-                      >
-                        <Button
-                          className={classes.editButton}
-                          component={Link}
-                          to={`#`}
+                        <Typography variant='body2'>
+                          Συγγραφέας:{' '}
+                          <span className={classes.specialText}>
+                            {item.users_p.username}
+                          </span>
+                        </Typography>
+                        <Typography variant='body2'>
+                          Κατάσταση:{' '}
+                          <span className={classes.specialText}>
+                            {item.status === 'public' ? 'Δημόσιο' : 'Ιδιωτικό'}
+                          </span>
+                        </Typography>
+                        <Typography variant='subtitle2'>
+                          Ημερομηνία:{' '}
+                          <span className={classes.specialText}>
+                            {displayDate(item.createdAt)}
+                          </span>
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Grid
+                          item
+                          container
+                          direction='row'
+                          justify='space-between'
+                          alignItems='center'
                         >
-                          <Icon>
-                            <span class='material-icons-outlined'>edit</span>
-                          </Icon>
-                        </Button>
+                          <Button
+                            className={classes.editButton}
+                            component={Link}
+                            to={`/teacher/library/edit/${item.id}`}
+                          >
+                            <Icon>
+                              <span className='material-icons-outlined'>
+                                edit
+                              </span>
+                            </Icon>
+                          </Button>
 
-                        <Button
-                          className={classes.deleteButton}
-                          component={Link}
-                          to={`#`}
-                        >
-                          <Icon>
-                            <span class='material-icons-outlined'>delete</span>
-                          </Icon>
-                        </Button>
-                      </Grid>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              )
-          )}
-        </Grid>
+                          <Button
+                            className={classes.deleteButton}
+                            id={item.id}
+                            onClick={() => {
+                              setDeleteId(item.id);
+                              handleClickOpen();
+                            }}
+                          >
+                            <Icon>
+                              <span className='material-icons-outlined'>
+                                delete
+                              </span>
+                            </Icon>
+                          </Button>
+                        </Grid>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+            )}
+            <Grid item container justify='center'>
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={quizzes.length}
+                paginate={paginate}
+                currentPage={currentPage}
+              />
+            </Grid>
+          </Grid>
+        </>
       )}
     </Grid>
   );

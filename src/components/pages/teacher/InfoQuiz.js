@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listQuizDetails } from '../../../actions/quizActions';
 import { useParams } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -14,7 +15,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { Icon } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import { Button } from '@material-ui/core';
-import QuizActions from '../../ui/QuizActions';
+
+import { listQuizDetails } from '../../../actions/quizActions';
+import QuizActions from '../teacher/components/QuizActions';
 import Message from '../../ui/Message';
 import Loader from '../../ui/Loader';
 
@@ -52,13 +55,19 @@ export default function InfoQuiz() {
   const classes = useStyles();
   const dispatch = useDispatch();
   let { id } = useParams();
+  let history = useHistory();
 
   const quizDetails = useSelector((state) => state.quizDetails);
   const { loading, error, quiz } = quizDetails;
 
   useEffect(() => {
     dispatch(listQuizDetails(id));
-  }, [dispatch, id]);
+    if (error) {
+      setTimeout(() => {
+        history.push('/teacher', { from: 'InfoQuiz' });
+      }, 2000);
+    }
+  }, [dispatch, id, history, error]);
 
   return (
     <Grid
@@ -80,7 +89,7 @@ export default function InfoQuiz() {
             <Hidden xsDown>
               <CardMedia
                 className={classes.cardMedia}
-                image='https://source.unsplash.com/random'
+                image={`http://localhost:5000/uploads/${quiz.photo}`}
                 title='Image title'
               />
             </Hidden>
@@ -118,7 +127,7 @@ export default function InfoQuiz() {
                           >
                             query_builder
                           </Icon>
-                          15 δευτερόλεπτα/ερώτηση
+                          {quiz.time} δευτερόλεπτα/ερώτηση
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>
@@ -171,7 +180,7 @@ export default function InfoQuiz() {
                               mail_outline
                             </span>
                           </Icon>
-                          greg@hotmail.com
+                          {quiz.users_p.email}
                         </ListItemIcon>
                       </ListItem>
                     </List>
