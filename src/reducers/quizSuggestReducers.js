@@ -10,6 +10,10 @@ import {
   SUGGEST_ADD_SUCCESS,
   SUGGEST_ADD_FAIL,
   SUGGEST_ADD_RESET,
+  SUGGEST_DELETE_REQUEST,
+  SUGGEST_DELETE_SUCCESS,
+  SUGGEST_DELETEL_FAIL,
+  SUGGEST_DELETE_RESET,
 } from '../constants/suggestConstants';
 
 export const quizSuggestReducer = (state = { suggest: [] }, action) => {
@@ -19,7 +23,7 @@ export const quizSuggestReducer = (state = { suggest: [] }, action) => {
     case SUGGEST_LIST_SUCCESS:
       return { loading: false, suggest: action.payload };
     case SUGGEST_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, suggest: [] };
     default:
       return state;
   }
@@ -52,6 +56,21 @@ export const addSuggestReducer = (state = {}, action) => {
     case SUGGEST_ADD_FAIL:
       return { loading: false, error: action.payload };
     case SUGGEST_ADD_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const deletedSuggestReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SUGGEST_DELETE_REQUEST:
+      return { loading: true };
+    case SUGGEST_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case SUGGEST_DELETEL_FAIL:
+      return { loading: false, error: action.payload };
+    case SUGGEST_DELETE_RESET:
       return {};
     default:
       return state;

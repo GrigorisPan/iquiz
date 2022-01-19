@@ -154,7 +154,7 @@ export default function DataForm({
           >
             <Grid item>
               <TextField
-                required
+                required={true}
                 label='Τίτλος'
                 id='title'
                 autoComplete='false'
@@ -197,7 +197,7 @@ export default function DataForm({
                 rows={4}
                 fullWidth
                 variant='filled'
-                required
+                required={true}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { teacherStatistics } from '../../../actions/statisticsAction';
+import { getStatistics } from '../../../actions/statisticsAction';
 import StatisticsCard from './components/StatisticsCard';
 import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
@@ -33,10 +33,9 @@ export default function Statistics() {
   const { loading, error, statistics } = quizStatistics;
   const { userInfo } = authLogin;
 
-  const user_id = userInfo.id;
   useEffect(() => {
-    dispatch(teacherStatistics(user_id));
-  }, [dispatch, user_id]);
+    dispatch(getStatistics());
+  }, [dispatch]);
 
   return (
     <Grid

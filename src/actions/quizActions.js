@@ -28,42 +28,48 @@ import {
   QUIZ_LIBRARY_DETAILS_SUCCESS,
   QUIZ_LIBRARY_DETAILS_FAIL,
   QUIZ_LIBRARY_DETAILS_RESET,
+  QUIZ_DELETE_RESET,
 } from '../constants/quizConstants';
 import axios from 'axios';
 
-export const listQuizzes = () => async (dispatch, getState) => {
-  try {
-    dispatch({ type: QUIZ_LIST_REQUEST });
+export const listQuizzes =
+  (searched = '') =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: QUIZ_LIST_REQUEST });
 
-    const {
-      authLogin: { userInfo },
-    } = getState();
+      const {
+        authLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const res = await axios.get('/api/v1/quizzes/', config);
+      const res = await axios.get(
+        `/api/v1/quizzes/?searched=${searched}`,
+        config
+      );
 
-    const data = res.data.data;
+      const data = res.data.data;
 
-    dispatch({
-      type: QUIZ_LIST_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: QUIZ_LIST_FAIL,
-      payload:
-        error.response && error.response.data.error
-          ? error.response.data.error
-          : error.error,
-    });
-  }
-};
+      dispatch({
+        type: QUIZ_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: QUIZ_LIST_FAIL,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.error,
+      });
+    }
+  };
 export const listLibraryQuizzes = () => async (dispatch, getState) => {
   try {
     dispatch({ type: QUIZ_LIBRARY_LIST_REQUEST });
@@ -309,4 +315,8 @@ export const quizDelete = (id) => async (dispatch, getState) => {
           : error.error,
     });
   }
+};
+
+export const quizDeleteClean = () => (dispatch) => {
+  dispatch({ type: QUIZ_DELETE_RESET });
 };

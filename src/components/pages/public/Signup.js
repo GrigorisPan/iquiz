@@ -60,7 +60,7 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [show, setShow] = useState('false');
+  const [show, setShow] = useState(false);
 
   const authRegister = useSelector((state) => state.authRegister);
   const { loading, error } = authRegister;
@@ -69,9 +69,9 @@ export default function Signup() {
 
   useEffect(() => {
     if (error) {
-      setShow('true');
+      setShow(true);
       setTimeout(() => {
-        setShow('false');
+        setShow(false);
         dispatch(registerClean());
       }, 1500);
     }
@@ -133,7 +133,7 @@ export default function Signup() {
             <form onSubmit={submitHandler}>
               <Grid item>
                 <FormControl className={classes.formControl}>
-                  <InputLabel id='type-user-select-label' required='true'>
+                  <InputLabel id='type-user-select-label' required={true}>
                     Κατηγορία χρήστη
                   </InputLabel>
                   <Select

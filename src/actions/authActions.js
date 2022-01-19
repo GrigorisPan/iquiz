@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { store, rootReducer } from '../../src/store.js';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -12,7 +13,12 @@ import {
 import {
   USER_UPDATE_PROFILE_RESET,
   USER_DETAILS_RESET,
+  USER_LIST_RESET,
 } from '../constants/userConstants';
+import {
+  QUIZ_DETAILS_RESET,
+  QUIZ_LIBRARY_LIST_RESET,
+} from '../constants/quizConstants';
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -57,7 +63,11 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_UPDATE_PROFILE_RESET });
   dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: USER_LIST_RESET });
+  dispatch({ type: QUIZ_LIBRARY_LIST_RESET });
+  dispatch({ type: QUIZ_DETAILS_RESET });
   dispatch({ type: LOGOUT });
+  //rootReducer('LOGOUT');
 };
 
 export const register =

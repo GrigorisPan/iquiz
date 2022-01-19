@@ -1,12 +1,8 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Route, useParams } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -25,27 +21,9 @@ import Button from '@material-ui/core/Button';
 import Message from '../../ui/Message';
 import ButtonArrow from '../../ui/ButtonArrow';
 import { Pagination } from '../../ui/Pagination';
+import SearchBox from './components/SearchBox';
 
 const useStyles = makeStyles((theme) => ({
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: 400,
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'hidden',
-    flexDirection: 'column',
-  },
   fixedHeight: {
     height: 240,
   },
@@ -76,9 +54,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const theme = useTheme();
+  const { searched } = useParams();
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const [searched, setSeached] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(1);
 
@@ -86,10 +65,11 @@ export default function Home() {
 
   const quizList = useSelector((state) => state.quizList);
   const { loading, error, quizzes } = quizList;
+
   useEffect(() => {
-    dispatch(listQuizzes());
+    dispatch(listQuizzes(searched));
     dispatch(listQuizDetailsClean());
-  }, [dispatch]);
+  }, [dispatch, searched]);
 
   // Get current quiz
   const indexOfLast = currentPage * itemsPerPage;
@@ -101,15 +81,6 @@ export default function Home() {
     setCurrentPage(pageNumber);
   };
 
-  /*  const requestSearch = (searchValue) => {
-    return;
-  };
-
-  const onCancelSearch = () => {
-    setSeached('');
-    requestSearch(searched);
-  }; */
-
   const displayDate = (timestamp) => {
     const todate = new Date(timestamp).getDate();
     const tomonth = new Date(timestamp).getMonth() + 1;
@@ -120,22 +91,7 @@ export default function Home() {
 
   return (
     <Grid container direction='column' spacing={3}>
-      <Grid item container justify='center'>
-        <Paper className={classes.search}>
-          <InputBase
-            className={classes.input}
-            placeholder='Αναζήτηση'
-            inputProps={{ 'aria-label': 'Search Quiz' }}
-          />
-          <IconButton
-            type='submit'
-            aria-label='search'
-            className={classes.iconButton}
-          >
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-      </Grid>
+      <Route render={({ history }) => <SearchBox history={history} />} />
       <Divider style={{ marginTop: '1em' }} />
       {loading ? (
         <Loader />

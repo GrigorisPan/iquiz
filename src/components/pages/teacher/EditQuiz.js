@@ -149,7 +149,7 @@ export default function EditQuiz({ match }) {
               justify='center'
               style={{ marginBottom: '1em' }}
             >
-              <Message severity='success'>Quiz Updated</Message>
+              <Message severity='success'>Επιτυχής Ενημέρωση</Message>
             </Grid>
           )}
           <Typography

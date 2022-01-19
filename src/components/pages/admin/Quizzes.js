@@ -1,0 +1,254 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import { Grid } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import TablePagination from '@material-ui/core/TablePagination';
+
+import TableShow from './components/TableShow';
+import {
+  listLibraryQuizzes,
+  listLibraryQuizDetailsClean,
+  quizDelete,
+  quizDeleteClean,
+} from '../../../actions/quizActions';
+import DeleteModal from '../teacher/components/DeleteModal';
+import Loader from '../../ui/Loader';
+import Message from '../../ui/Message';
+
+const columns = [
+  { id: 'id', label: 'Id', minWidth: 20, align: 'center' },
+  { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  {
+    id: 'title',
+    label: 'Title',
+    minWidth: 100,
+    align: 'left',
+  },
+  {
+    id: 'description',
+    label: 'Description',
+    minWidth: 100,
+    align: 'left',
+  },
+  {
+    id: 'time',
+    label: 'Time',
+    minWidth: 20,
+    align: 'center',
+  },
+  {
+    id: 'otp',
+    label: 'OTP',
+    minWidth: 20,
+    align: 'center',
+  },
+  {
+    id: 'photo',
+    label: 'Photo',
+    minWidth: 20,
+    align: 'left',
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    minWidth: 20,
+    align: 'left',
+  },
+  {
+    id: 'createdAt',
+    label: 'CreatedAt',
+    minWidth: 20,
+    align: 'left',
+  },
+  {
+    id: 'updatedAt',
+    label: 'UpdatedAt',
+    minWidth: 20,
+    align: 'left',
+  },
+  {
+    id: 'more',
+    label: '',
+    minWidth: 20,
+    align: 'center',
+  },
+];
+
+function createData(
+  id,
+  user_id,
+  title,
+  description,
+  time,
+  otp,
+  photo,
+  status,
+  createdAt,
+  updatedAt,
+  more
+) {
+  return {
+    id,
+    user_id,
+    title,
+    description,
+    time,
+    otp,
+    photo,
+    status,
+    createdAt,
+    updatedAt,
+    more,
+  };
+}
+
+const displayDate = (timestamp) => {
+  const todate = new Date(timestamp).getDate();
+  const tomonth = new Date(timestamp).getMonth() + 1;
+  const toyear = new Date(timestamp).getFullYear();
+  const original_date = tomonth + '/' + todate + '/' + toyear;
+  return original_date;
+};
+
+export default function Quizzes() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
+  const [show, setShow] = useState(false);
+
+  const dispatch = useDispatch();
+  let history = useHistory();
+
+  const authLogin = useSelector((state) => state.authLogin);
+  const { userInfo } = authLogin;
+
+  const quizLibraryList = useSelector((state) => state.quizLibraryList);
+  const { loading, quizzes } = quizLibraryList;
+
+  const quizDeleted = useSelector((state) => state.quizDeleted);
+  const { success: successDelete, error: errorDelete } = quizDeleted;
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login', { from: '/admin/quizzes' });
+    } else {
+      /* dispatch(userDetailsClean()); */
+      dispatch(listLibraryQuizzes());
+    }
+    return () => {
+      dispatch(listLibraryQuizDetailsClean());
+    };
+  }, [dispatch, history, successDelete, errorDelete]);
+
+  let rows = [];
+
+  quizzes.forEach((quiz) => {
+    const createdAt = displayDate(quiz.createdAt);
+    const updatedAt = displayDate(quiz.updatedAt);
+    let row = createData(
+      quiz.id,
+      quiz.user_id,
+      quiz.title,
+      quiz.description,
+      quiz.time,
+      quiz.questions_otp,
+      quiz.photo,
+      quiz.status,
+      createdAt,
+      updatedAt,
+      'more'
+    );
+    rows.push(row);
+  });
+
+  //Delete function
+  const deleteHandler = (id) => {
+    dispatch(quizDelete(id));
+    setShow(true);
+    setOpen(false);
+    setTimeout(() => {
+      setShow(false);
+      dispatch(quizDeleteClean());
+    }, 1500);
+  };
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+      setDeleteId(0);
+    }
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  return (
+    <>
+      <Typography gutterBottom variant='h3'>
+        Πίνακας Κουίζ
+      </Typography>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <Grid container style={{ paddingBottom: '2em' }}>
+          {show && successDelete && (
+            <Grid container justify='center'>
+              <Message severity='success'>Επιτυχής διαγραφή!</Message>
+            </Grid>
+          )}
+          {show && errorDelete && (
+            <Grid container justify='center'>
+              <Message severity='error'>Σφάλμα</Message>
+            </Grid>
+          )}
+        </Grid>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <DeleteModal
+              open={open}
+              setDeleteId={setDeleteId}
+              setOpen={setOpen}
+              deleteHandler={deleteHandler}
+              deleteId={deleteId}
+              handleClose={handleClose}
+            />
+            <TableShow
+              columns={columns}
+              rows={rows}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              setDeleteId={setDeleteId}
+              handleClickOpen={handleClickOpen}
+              editUrl={`/admin/quizzes/edit`}
+              editBtn={true}
+              deleteBtn={true}
+            />
+          </>
+        )}
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component='div'
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </>
+  );
+}

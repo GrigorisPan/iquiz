@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
   root: {
     maxWidth: '70%',
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
     overflow: 'auto',
     [theme.breakpoints.down('sm')]: {
       maxWidth: '100%',
@@ -116,12 +116,12 @@ export default function InfoClass() {
                         <Typography gutterBottom variant='h6'>
                           {dClass.title}
                         </Typography>
-                        <Typography gutterBottom variant='subtitle2'>
+                        {/*  <Typography gutterBottom variant='subtitle2'>
                           Εκπαιδευτικός <br />
                           <span className={classes.specialText}>
                             Grigoris Panagiotopoulos
                           </span>
-                        </Typography>
+                        </Typography> */}
                         <Hidden smDown>
                           <Typography gutterBottom variant='subtitle2'>
                             {dClass.description}
@@ -132,8 +132,14 @@ export default function InfoClass() {
                   </Grid>
                 </Grid>
                 <Grid item sm={matchesXS ? 6 : 3}>
-                  <Grid item container direction='column' alignItems='flex-end'>
-                    <CardContent>
+                  <Grid
+                    item
+                    container
+                    direction='column'
+                    alignItems='flex-end'
+                    justifycontent='center'
+                  >
+                    <CardContent style={{ padding: '1em 0.5em' }}>
                       <Grid item>
                         <ListItemIcon
                           style={{ marginRight: '0.5em', fontSize: '1em' }}
@@ -166,9 +172,9 @@ export default function InfoClass() {
             </Card>
           </Grid>
 
-          <Grid item style={{ marginTop: '5em' }}>
+          <Grid item style={{ marginTop: '3em' }}>
             <Grid item container direction='row'>
-              <Grid item xs={12} sm={12} md={4}>
+              <Grid item xs={12} sm={12} md={4} style={{ margin: '3em 0em' }}>
                 <Grid item container direction='column'>
                   <Grid item align='center'>
                     <List>
@@ -195,7 +201,7 @@ export default function InfoClass() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={12} md={7}>
+              <Grid item xs={12} sm={12} md={7} style={{ margin: '3em 0em' }}>
                 <Grid
                   item
                   container

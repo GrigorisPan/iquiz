@@ -8,16 +8,58 @@ import {
   USERS_INCLASS_REQUEST,
   USERS_INCLASS_SUCCESS,
   USERS_INCLASS_FAIL,
+  STATISTICS_DELETE_REQUEST,
+  STATISTICS_DELETE_SUCCESS,
+  STATISTICS_DELETE_FAIL,
+  STATISTICS_DELETE_RESET,
+  USERS_INCLASS_DELETE_REQUEST,
+  USERS_INCLASS_DELETE_SUCCESS,
+  USERS_INCLASS_DELETE_FAIL,
+  USERS_INCLASS_DELETE_RESET,
+  STATISTICS_DASHBOARD_REQUEST,
+  STATISTICS_DASHBOARD_SUCCESS,
+  STATISTICS_DASHBOARD_FAIL,
 } from '../constants/statisticsConstants';
 
-export const quizStatisticsReducer = (state = { statistics: [] }, action) => {
+export const quizStatisticsReducer = (
+  state = { statistics: [{ reports: [] }] },
+  action
+) => {
   switch (action.type) {
     case STATISTICS_REQUEST:
-      return { loading: true, statistics: [] };
+      return { ...state, loading: true };
     case STATISTICS_SUCCESS:
       return { loading: false, statistics: action.payload };
     case STATISTICS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const statisticsDashboardReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STATISTICS_DASHBOARD_REQUEST:
+      return { loading: true, ...state };
+    case STATISTICS_DASHBOARD_SUCCESS:
+      return { loading: false, ...action.payload };
+    case STATISTICS_DASHBOARD_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const deletedStatisticsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STATISTICS_DELETE_REQUEST:
+      return { loading: true };
+    case STATISTICS_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case STATISTICS_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case STATISTICS_DELETE_RESET:
+      return {};
     default:
       return state;
   }
@@ -30,7 +72,7 @@ export const scoreTableReducer = (state = { score: [] }, action) => {
     case SCORE_SUCCESS:
       return { loading: false, score: action.payload };
     case SCORE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, score: [] };
     default:
       return state;
   }
@@ -47,6 +89,25 @@ export const usersInClassReducer = (state = { users: [] }, action) => {
       };
     case USERS_INCLASS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const usersInClassDeletedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USERS_INCLASS_DELETE_REQUEST:
+      return { loading: true };
+    case USERS_INCLASS_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        users: action.payload,
+      };
+    case USERS_INCLASS_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case USERS_INCLASS_DELETE_RESET:
+      return {};
     default:
       return state;
   }

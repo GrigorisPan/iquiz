@@ -10,8 +10,45 @@ import {
   SUGGEST_ADD_SUCCESS,
   SUGGEST_ADD_REQUEST,
   SUGGEST_ADD_RESET,
+  SUGGEST_DELETE_REQUEST,
+  SUGGEST_DELETE_SUCCESS,
+  SUGGEST_DELETEL_FAIL,
+  SUGGEST_DELETE_RESET,
 } from '../constants/suggestConstants';
 import axios from 'axios';
+
+export const listSuggestQuizAll = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SUGGEST_LIST_REQUEST });
+    const {
+      authLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const res = await axios.get(`/api/v1/suggestquiz/all`, config);
+
+    const data = res.data.data;
+
+    dispatch({
+      type: SUGGEST_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SUGGEST_LIST_FAIL,
+
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
 
 export const listSuggestQuiz = (id) => async (dispatch) => {
   try {
@@ -111,4 +148,42 @@ export const addSuggestQuiz = (body) => async (dispatch, getState) => {
 
 export const addSuggestQuizClean = () => async (dispatch) => {
   dispatch({ type: SUGGEST_ADD_RESET });
+};
+
+export const deleteSuggestQuiz = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SUGGEST_DELETE_REQUEST });
+
+    const {
+      authLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const res = await axios.delete(`/api/v1/suggestquiz/${id}`, config);
+    const data = res.data.data;
+
+    dispatch({
+      type: SUGGEST_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SUGGEST_DELETEL_FAIL,
+
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
+
+export const deleteQuizClean = () => async (dispatch) => {
+  dispatch({ type: SUGGEST_DELETE_RESET });
 };

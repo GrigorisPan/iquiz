@@ -119,6 +119,8 @@ export default function Profile() {
 
       <MainForm
         loading={loading}
+        text={'Επεξεργασία προσωπικών στοιχείων!'}
+        title={'Προφίλ'}
         submitHandler={submitHandler}
         selection={false}
         setUsername={setUsername}

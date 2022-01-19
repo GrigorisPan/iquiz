@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainForm({
-  setType,
+  title,
+  text,
   loading,
   setUsername,
   submitHandler,
@@ -55,6 +56,8 @@ export default function MainForm({
   email,
   selection,
   type,
+  setType,
+  isAdmin,
 }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -75,14 +78,14 @@ export default function MainForm({
           style={{ lineHeight: 1 }}
           align='center'
         >
-          Προφίλ
+          {title}
         </Typography>
         <Typography
           variant='body1'
           align='center'
           style={{ marginTop: '0.8em' }}
         >
-          Επεξεργασία προσωπικών στοιχείων!
+          {text}
         </Typography>
       </Grid>
       <Grid item>
@@ -100,8 +103,9 @@ export default function MainForm({
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                   >
-                    <MenuItem value={1}>Εκπαιδευτικός</MenuItem>
-                    <MenuItem value={2}>Εκπαιδευόμενος</MenuItem>
+                    <MenuItem value={2}>Εκπαιδευτικός</MenuItem>
+                    <MenuItem value={0}>Εκπαιδευόμενος</MenuItem>
+                    {isAdmin && <MenuItem value={1}>Διαχειριστής</MenuItem>}
                   </Select>
                 </FormControl>
               </Grid>

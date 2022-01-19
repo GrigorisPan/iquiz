@@ -1,8 +1,8 @@
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Icon } from '@material-ui/core';
 import { Grid } from '@material-ui/core';

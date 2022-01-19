@@ -172,7 +172,7 @@ export default function Dashboard({ children, role }) {
             </IconButton>
             <Button
               component={Link}
-              to={role === 'teacher' ? '/teacher' : '/student'}
+              to={role === `/${role}`}
               onClick={() => setValue(0)}
               disableRipple
               className={
@@ -215,7 +215,10 @@ export default function Dashboard({ children, role }) {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbarMargin} />
-          <Container maxWidth='lg' className={classes.container}>
+          <Container
+            maxWidth={role === 'admin' ? 'xl' : 'lg'}
+            className={classes.container}
+          >
             <div>{children}</div>
             <Box pt={4}>
               <Copyright />

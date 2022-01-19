@@ -28,6 +28,8 @@ import {
   QUIZ_LIBRARY_DETAILS_SUCCESS,
   QUIZ_LIBRARY_DETAILS_FAIL,
   QUIZ_LIBRARY_DETAILS_RESET,
+  QUIZ_DELETE_RESET,
+  QUIZ_LIBRARY_LIST_RESET,
 } from '../constants/quizConstants';
 
 export const quizListReducer = (state = { quizzes: [] }, action) => {
@@ -50,7 +52,9 @@ export const quizLibraryListReducer = (state = { quizzes: [] }, action) => {
     case QUIZ_LIBRARY_LIST_SUCCESS:
       return { loading: false, quizzes: action.payload };
     case QUIZ_LIBRARY_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, quizzes: [] };
+    case QUIZ_LIBRARY_LIST_RESET:
+      return { quizzes: [] };
     default:
       return state;
   }
@@ -145,6 +149,8 @@ export const quizDeletedReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case QUIZ_DELETE_FAIL:
       return { loading: false, error: action.payload };
+    case QUIZ_DELETE_RESET:
+      return {};
     default:
       return state;
   }

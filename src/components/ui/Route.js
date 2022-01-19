@@ -5,7 +5,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { teacherRoutes, studentRoutes, mainRoutes } from './routes';
+import {
+  teacherRoutes,
+  studentRoutes,
+  adminRoutes,
+  mainRoutes,
+} from './routes';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 
@@ -18,6 +23,7 @@ export default function Route(props) {
   } else if (props.role === 'student') {
     routes = studentRoutes;
   } else {
+    routes = adminRoutes;
   }
 
   const value = props.value;

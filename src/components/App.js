@@ -21,14 +21,34 @@ import Statistics from './pages/teacher/Statistics';
 import { Redirect } from 'react-router';
 import Profile from './pages/teacher/Profile';
 import EditQuiz from './pages/teacher/EditQuiz';
+
+import HomeSt from './pages/student/HomeSt';
+import InfoQuizSt from './pages/student/InfoQuizSt';
+import DigitalClassSt from './pages/student/DigitalClassSt';
+import InfoClassSt from './pages/student/InfoClassSt';
+import ProfileSt from './pages/student/ProfileSt';
+import StatisticsSt from './pages/student/StatisticsSt';
+
+import Dashboard from './pages/admin/Dashboard';
+import Users from './pages/admin/Users';
+import UserEdit from './pages/admin/UserEdit';
+import ProfileAd from './pages/admin/ProfileAd';
+import DigitalClasses from './pages/admin/DigitalClasses';
+import DigitalClassEdit from './pages/admin/DigitalClassEdit';
+import Quizzes from './pages/admin/Quizzes';
+import QuizEdit from './pages/admin/QuizEdit';
+import Reports from './pages/admin/Reports';
+import SuggestQuizzes from './pages/admin/SuggestQuizzes';
+import StatisticsAd from './pages/admin/StatisticsAd';
 let login = false;
-const role = 'teacher';
+let type = undefined;
 
 function App() {
   const authLogin = useSelector((state) => state.authLogin);
   const { userInfo } = authLogin;
   if (userInfo) {
     login = true;
+    type = +userInfo.type;
   } else {
     login = false;
   }
@@ -55,11 +75,14 @@ function App() {
           <Footer />
         </React.Fragment>
       );
-    } else if (role === 'teacher') {
+    } else if (type === 2) {
       return (
         <React.Fragment>
-          <Layout role={role}>
+          <Layout role={'teacher'}>
             <Switch>
+              <Route path='/teacher/search/:searched'>
+                <Home />
+              </Route>
               <Route exact path='/teacher'>
                 <Home />
               </Route>
@@ -84,7 +107,7 @@ function App() {
               <Route exact path='/teacher/statistics'>
                 <Statistics />
               </Route>
-              <Route exact path='/teacher/profile'>
+              <Route exact path='/profile'>
                 <Profile />
               </Route>
               <Redirect to='/teacher' />
@@ -92,32 +115,77 @@ function App() {
           </Layout>
         </React.Fragment>
       );
-    } else if (role === 'student') {
+    } else if (type === 0) {
       return (
         <React.Fragment>
-          <Layout role={role}>
+          <Layout role={'student'}>
             <Switch>
-              <Route
-                exact
-                path='/student'
-                component={() => <div> Student Info Quiz</div>}
-              />
-              <Route
-                exact
-                path='/student/digiClass'
-                component={() => <div>student Digiral Class</div>}
-              />
-
-              <Route
-                exact
-                path='/student/statistics'
-                component={() => <div> student Statistics</div>}
-              />
+              <Route exact path='/student'>
+                <HomeSt />
+              </Route>
+              <Route exact path='/student/quiz/:id'>
+                <InfoQuizSt match={URL.match} />
+              </Route>
+              <Route exact path='/student/statistics'>
+                <StatisticsSt />
+              </Route>
+              <Route exact path='/student/digiClass'>
+                <DigitalClassSt />
+              </Route>
+              <Route exact path='/student/digiClass/:id'>
+                <InfoClassSt />
+              </Route>
+              <Route exact path='/profile'>
+                <ProfileSt />
+              </Route>
+              <Redirect to='/student' />
             </Switch>
           </Layout>
         </React.Fragment>
       );
     } else {
+      return (
+        <React.Fragment>
+          <Layout role={'admin'}>
+            <Switch>
+              <Route exact path='/admin'>
+                <Dashboard />
+              </Route>
+              <Route exact path='/admin/users'>
+                <Users />
+              </Route>
+              <Route exact path='/admin/users/edit/:id'>
+                <UserEdit />
+              </Route>
+              <Route exact path='/admin/quizzes'>
+                <Quizzes />
+              </Route>
+              <Route exact path='/admin/quizzes/edit/:id'>
+                <QuizEdit />
+              </Route>
+              <Route exact path='/admin/digitalclass'>
+                <DigitalClasses />
+              </Route>
+              <Route exact path='/admin/digitalclass/edit/:id'>
+                <DigitalClassEdit />
+              </Route>
+              <Route exact path='/admin/reports/'>
+                <Reports />
+              </Route>
+              <Route exact path='/admin/suggestquizzes/'>
+                <SuggestQuizzes />
+              </Route>
+              <Route exact path='/admin/statistics/'>
+                <StatisticsAd />
+              </Route>
+              <Route exact path='/profile'>
+                <ProfileAd />
+              </Route>
+              <Redirect to='/admin' />
+            </Switch>
+          </Layout>
+        </React.Fragment>
+      );
     }
   };
 

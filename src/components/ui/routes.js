@@ -47,12 +47,52 @@ export const studentRoutes = [
   },
 ];
 
+export const adminRoutes = [
+  { name: 'Αρχική', link: '/admin', icon: 'dashboard', activeIndex: 0 },
+  {
+    name: 'Χρήστες',
+    link: '/admin/users',
+    icon: 'people',
+    activeIndex: 1,
+  },
+  {
+    name: 'Κουίζ',
+    link: '/admin/quizzes',
+    icon: 'quiz',
+    activeIndex: 2,
+  },
+  {
+    name: 'Προτεινόμενα Κουίζ',
+    link: '/admin/suggestquizzes',
+    icon: 'queue',
+    activeIndex: 3,
+  },
+  {
+    name: 'Στατιστικά',
+    link: '/admin/statistics',
+    icon: 'leaderboard',
+    activeIndex: 4,
+  },
+  {
+    name: 'Ψηφιακές Τάξεις',
+    link: '/admin/digitalclass',
+    icon: 'school',
+    activeIndex: 5,
+  },
+  {
+    name: 'Αναφορές',
+    link: '/admin/reports',
+    icon: 'bug_report',
+    activeIndex: 6,
+  },
+];
+
 export const mainRoutes = [
   {
     name: 'Προφίλ',
-    link: '/teacher/profile',
+    link: '/profile',
     icon: 'manage_accounts',
-    activeIndex: 5,
+    activeIndex: 7,
   },
   /*   {
     name: 'Αποσύνδεση',
