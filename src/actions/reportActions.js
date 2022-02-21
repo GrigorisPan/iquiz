@@ -6,6 +6,11 @@ import {
   REPORT_DELETE_REQUEST,
   REPORT_DELETE_SUCCESS,
   REPORT_DETELE_RESET,
+  REPORT_CREATE_REQUEST,
+  REPORT_CREATE_SUCCESS,
+  REPORT_CREATE_FAIL,
+  REPORT_CREATE_RESET,
+  REPORT_CHECK_SUCCESS,
 } from '../constants/reportConstants';
 import axios from 'axios';
 
@@ -78,4 +83,47 @@ export const reportDelete = (id) => async (dispatch, getState) => {
 
 export const reportDeleteClean = () => async (dispatch) => {
   dispatch({ type: REPORT_DETELE_RESET });
+};
+
+export const reportCreate = (body) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: REPORT_CREATE_REQUEST });
+    const {
+      authLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    //console.log(config);
+    const res = await axios.post(`/api/v1/reports/`, body, config);
+
+    const data = res.data.data;
+
+    dispatch({
+      type: REPORT_CREATE_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: REPORT_CHECK_SUCCESS,
+      payload: false,
+    });
+  } catch (error) {
+    dispatch({
+      type: REPORT_CREATE_FAIL,
+
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
+
+export const reportCreateClean = () => async (dispatch) => {
+  dispatch({ type: REPORT_CREATE_RESET });
 };

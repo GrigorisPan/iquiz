@@ -7,6 +7,14 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   REGISTER_RESET,
+  USER_INFO_CHECK_REQUEST,
+  USER_INFO_CHECK_SUCCESS,
+  USER_INFO_CHECK_FAIL,
+  USER_INFO_CHECK_RESET,
+  REFRESH_INFO_REQUEST,
+  REFRESH_INFO_SUCCESS,
+  REFRESH_INFO_FAIL,
+  REFRESH_INFO_RESET,
 } from '../constants/authConstants';
 
 export const authLoginReducer = (state = {}, action) => {
@@ -33,6 +41,36 @@ export const authRegisterReducer = (state = {}, action) => {
     case REGISTER_FAIL:
       return { loading: false, error: action.payload };
     case REGISTER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const authCheckReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_INFO_CHECK_REQUEST:
+      return { loading: true };
+    case USER_INFO_CHECK_SUCCESS:
+      return { loading: false, success: true, userInfoCheck: action.payload };
+    case USER_INFO_CHECK_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_INFO_CHECK_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const authRefreshReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REFRESH_INFO_REQUEST:
+      return { loading: true };
+    case REFRESH_INFO_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case REFRESH_INFO_FAIL:
+      return { loading: false, error: action.payload };
+    case REFRESH_INFO_RESET:
       return {};
     default:
       return state;

@@ -8,7 +8,7 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '50%',
+    width: '70%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Message({ severity, children }) {
+export default function Message({ severity, children, width }) {
   const classes = useStyles();
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,10 @@ import { getStatistics } from '../../../actions/statisticsAction';
 import StatisticsCard from './components/StatisticsCard';
 import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
+import {
+  reportDelete,
+  reportDeleteClean,
+} from '../../../actions/reportActions';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -24,18 +28,30 @@ export default function Statistics() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
-
+  const [show, setShow] = useState(false);
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const quizStatistics = useSelector((state) => state.quizStatistics);
-  const authLogin = useSelector((state) => state.authLogin);
-
   const { loading, error, statistics } = quizStatistics;
-  const { userInfo } = authLogin;
+
+  const reportDeleted = useSelector((state) => state.reportDeleted);
+  const { success: successDelete } = reportDeleted;
 
   useEffect(() => {
     dispatch(getStatistics());
   }, [dispatch]);
+
+  //Delete function
+  const deleteHandler = (user_id, quiz_id) => {
+    const ids = `${user_id}-${quiz_id}`;
+    dispatch(reportDelete(ids));
+    setShow(true);
+    dispatch(getStatistics());
+    setTimeout(() => {
+      setShow(false);
+      dispatch(reportDeleteClean());
+    }, 1500);
+  };
 
   return (
     <Grid
@@ -57,19 +73,24 @@ export default function Statistics() {
           <span className={classes.specialText}>Κουίζ</span>
         </Typography>
       </Grid>
+      {successDelete && show && (
+        <Grid container justify='center' style={{ marginBottom: '0.5em' }}>
+          <Message severity='success'>Επιτυχής διαγραφή!</Message>
+        </Grid>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
         <Grid container justify='center'>
-          <Message severity='error'>{error}</Message>
-        </Grid>
-      ) : !statistics ? (
-        <Grid container justify='center'>
-          <Message severity='info'>Δεν υπάρχουν στατιστικά</Message>
+          <Message severity='info'>{error}</Message>
         </Grid>
       ) : (
         statistics.map((statistic) => (
-          <StatisticsCard key={statistic.id} statistic={statistic} />
+          <StatisticsCard
+            key={statistic.id}
+            statistic={statistic}
+            deleteHandler={deleteHandler}
+          />
         ))
       )}
     </Grid>

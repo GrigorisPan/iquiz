@@ -28,10 +28,7 @@ export default function StatisticsSt() {
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const quizStatistics = useSelector((state) => state.quizStatistics);
-  const authLogin = useSelector((state) => state.authLogin);
-
   const { loading, error, statistics } = quizStatistics;
-  const { userInfo } = authLogin;
 
   useEffect(() => {
     dispatch(getStatistics());

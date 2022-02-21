@@ -17,11 +17,18 @@ import Message from '../../ui/Message';
 
 const columns = [
   { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  { id: 'username', label: 'Username', minWidth: 100, align: 'left' },
   {
     id: 'quiz_id',
     label: 'Quiz Id',
     minWidth: 20,
     align: 'center',
+  },
+  {
+    id: 'quiz_title',
+    label: 'Quiz Title',
+    minWidth: 100,
+    align: 'left',
   },
   {
     id: 'score_avg',
@@ -71,7 +78,9 @@ const columns = [
 function createData(
   id,
   user_id,
+  username,
   quiz_id,
+  quiz_title,
   score_avg,
   correct_avg,
   false_avg,
@@ -83,7 +92,9 @@ function createData(
   return {
     id,
     user_id,
+    username,
     quiz_id,
+    quiz_title,
     score_avg,
     correct_avg,
     false_avg,
@@ -127,7 +138,7 @@ export default function StatisticsAd() {
     } else {
       dispatch(getStatisticsAll());
     }
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -138,7 +149,9 @@ export default function StatisticsAd() {
     let row = createData(
       id,
       statistic.user_id,
+      statistic.users_p.username,
       statistic.quiz_id,
+      statistic.quiz_p.title,
       statistic.score_avg,
       statistic.correct_avg,
       statistic.false_avg,

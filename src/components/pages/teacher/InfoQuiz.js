@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -105,7 +104,7 @@ export default function InfoQuiz() {
                   {quiz.description}
                 </Typography>
                 <Typography variant='body2'>
-                  Συγγραφέας:{' '}
+                  Καθηγητής:{' '}
                   <span className={classes.specialText}>
                     {quiz.users_p.username}
                   </span>
@@ -116,47 +115,51 @@ export default function InfoQuiz() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
                               marginRight: '0.5em',
                               color: '#8561c5',
-                              fontSize: '1.5em',
+                              fontSize: '1.6em',
                             }}
                           >
                             query_builder
                           </Icon>
-                          {quiz.time} δευτερόλεπτα/ερώτηση
+                          {quiz.time} δευτ/ερώτηση
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
                               marginRight: '0.5em',
                               color: '#6fbf73',
-                              fontSize: '1.5em',
+                              fontSize: '1.6em',
                             }}
                           >
                             replay
                           </Icon>
-                          5 φορές
+                          {quiz.repeat === 0 ? (
+                            <span>&infin; φορές</span>
+                          ) : (
+                            <span>{quiz.repeat} φορές</span>
+                          )}
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
                               marginRight: '0.5em',
                               color: '#4dabf5',
-                              fontSize: '1.5em',
+                              fontSize: '1.6em',
                             }}
                           >
                             <span>quiz</span>
@@ -167,7 +170,7 @@ export default function InfoQuiz() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
@@ -186,7 +189,12 @@ export default function InfoQuiz() {
                     </List>
                   </Grid>
                   <Grid item style={{ marginTop: '1em ' }} align='center'>
-                    <Button className={classes.moreButton} variant='contained'>
+                    <Button
+                      className={classes.moreButton}
+                      variant='contained'
+                      component={Link}
+                      to={`/game/${quiz.id}`}
+                    >
                       Έναρξη
                     </Button>
                   </Grid>

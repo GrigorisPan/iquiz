@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function QuizCreate() {
   const classes = useStyles();
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [repeat, setRepeat] = useState('');
   const [time, setTime] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
@@ -67,6 +67,7 @@ export default function QuizCreate() {
 
   const handleCancel = () => {
     setTitle('');
+    setRepeat('');
     setTime('');
     setDescription('');
     setStatus('');
@@ -77,12 +78,15 @@ export default function QuizCreate() {
   const handlerCreate = () => {
     //console.log(title, time, description, status);
     const questions_otp = questions.otpCode;
-    dispatch(quizNew({ title, description, time, questions_otp, status }));
+    dispatch(
+      quizNew({ title, repeat, description, time, questions_otp, status })
+    );
   };
 
   const handlerReset = () => {
     setTitle('');
     setTime('');
+    setRepeat('');
     setDescription('');
     setStatus('');
     dispatch(quizCreateClean());
@@ -121,6 +125,8 @@ export default function QuizCreate() {
             <DataForm
               title={title}
               setTitle={setTitle}
+              repeat={repeat}
+              setRepeat={setRepeat}
               time={time}
               setTime={setTime}
               description={description}

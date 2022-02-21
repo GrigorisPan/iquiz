@@ -112,7 +112,6 @@ const routes = [
   { name: 'Αρχική', link: '/', activeIndex: 0 },
   { name: 'Είσοδος', link: '/login', activeIndex: 1 },
   { name: 'Εγγραφή', link: '/signup', activeIndex: 2 },
-  { name: 'Επικοινωνία', link: '/contact', activeIndex: 3 },
 ];
 
 //Toolbar: helps to layout everything  horizontal.

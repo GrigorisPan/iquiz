@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import logo from '../../assets/logo.svg';
@@ -17,6 +18,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
+import { logout, userCheck } from '../../actions/authActions';
 
 const drawerWidth = 240;
 
@@ -140,15 +143,56 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard({ children, role }) {
+let logoutTimer;
+
+export default function Layout({ children, role }) {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   const [openDrawer, setOpenDrawer] = useState(false);
   const [value, setValue] = useState(0);
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const authCheck = useSelector((state) => state.authCheck);
+  const { userInfoCheck, error } = authCheck;
+  const authLogin = useSelector((state) => state.authLogin);
+  const { userInfo } = authLogin;
+
+  useEffect(() => {
+    dispatch(userCheck());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userInfoCheck) {
+      if (
+        userInfoCheck.type !== +userInfo.type ||
+        userInfoCheck.id !== +userInfo.id
+      ) {
+        dispatch(logout());
+      }
+    }
+    if (error || !userInfo) {
+      dispatch(logout());
+    }
+  }, [error, userInfoCheck, dispatch, userInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      const tokenExpirationDate = new Date(userInfo.expiration);
+      const remainigTime = tokenExpirationDate.getTime() - new Date().getTime();
+      //console.log(tokenExpirationDate, remainigTime);
+      logoutTimer = setTimeout(() => {
+        dispatch(logout());
+      }, remainigTime);
+    }
+    return () => {
+      clearTimeout(logoutTimer);
+      //console.log('clean');
+    };
+  }, [userInfo, dispatch]);
 
   return (
     <React.Fragment>

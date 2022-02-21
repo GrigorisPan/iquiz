@@ -1,4 +1,8 @@
 import {
+  REPORT_CREATE_FAIL,
+  REPORT_CREATE_REQUEST,
+  REPORT_CREATE_RESET,
+  REPORT_CREATE_SUCCESS,
   REPORT_DELETE_FAIL,
   REPORT_DELETE_REQUEST,
   REPORT_DELETE_SUCCESS,
@@ -30,6 +34,21 @@ export const reportDeletedReducer = (state = {}, action) => {
     case REPORT_DELETE_FAIL:
       return { loading: false, error: action.payload };
     case REPORT_DETELE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const gameReportReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REPORT_CREATE_REQUEST:
+      return { loading: true };
+    case REPORT_CREATE_SUCCESS:
+      return { loading: false, success: true, msg: action.payload };
+    case REPORT_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+    case REPORT_CREATE_RESET:
       return {};
     default:
       return state;

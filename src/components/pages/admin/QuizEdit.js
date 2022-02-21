@@ -50,6 +50,7 @@ export default function QuizEdit({ match }) {
 
   const [title, setTitle] = useState('');
   const [time, setTime] = useState('');
+  const [repeat, setRepeat] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
   const [show, setShow] = useState('false');
@@ -71,6 +72,7 @@ export default function QuizEdit({ match }) {
         dispatch(listLibraryQuizDetails(id));
       } else {
         setTitle(quiz.title);
+        setRepeat(quiz.repeat);
         setTime(quiz.time);
         setDescription(quiz.description);
         setStatus(quiz.status);
@@ -88,12 +90,19 @@ export default function QuizEdit({ match }) {
       dispatch(quizUpdateClean());
       setShow(false);
     };
-  }, [dispatch, id, quiz, history, error]);
+  }, [dispatch, userInfo, id, quiz, history, error]);
 
   const updateHandler = () => {
     const questions_otp = quiz.questions_otp;
     dispatch(
-      quizUpdateInfo(id, { title, description, time, questions_otp, status })
+      quizUpdateInfo(id, {
+        title,
+        repeat,
+        description,
+        time,
+        questions_otp,
+        status,
+      })
     );
     setShow(true);
     setTimeout(() => {
@@ -176,6 +185,8 @@ export default function QuizEdit({ match }) {
                   id={id}
                   title={title}
                   setTitle={setTitle}
+                  repeat={repeat}
+                  setRepeat={setRepeat}
                   time={time}
                   setTime={setTime}
                   description={description}

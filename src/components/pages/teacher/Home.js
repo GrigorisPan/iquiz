@@ -1,7 +1,8 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, useParams } from 'react-router-dom';
+import { Route, useParams, Link, useHistory } from 'react-router-dom';
+
 import { Grid } from '@material-ui/core';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -15,7 +16,6 @@ import {
   listQuizzes,
   listQuizDetailsClean,
 } from '../../../actions/quizActions';
-import { Link } from 'react-router-dom';
 import Loader from '../../ui/Loader';
 import Button from '@material-ui/core/Button';
 import Message from '../../ui/Message';
@@ -54,12 +54,17 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory;
+
   const { searched } = useParams();
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  let indexOfLast = 1;
+  let indexOfFirst = 1;
+  let currentQuizzes = [];
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const dispatch = useDispatch();
 
@@ -69,12 +74,14 @@ export default function Home() {
   useEffect(() => {
     dispatch(listQuizzes(searched));
     dispatch(listQuizDetailsClean());
-  }, [dispatch, searched]);
+  }, [dispatch, history, searched]);
 
-  // Get current quiz
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentQuizzes = quizzes.slice(indexOfFirst, indexOfLast);
+  if (!error) {
+    // Get current quiz
+    indexOfLast = currentPage * itemsPerPage;
+    indexOfFirst = indexOfLast - itemsPerPage;
+    currentQuizzes = quizzes.slice(indexOfFirst, indexOfLast);
+  }
 
   // Change page
   const paginate = (pageNumber) => {
@@ -91,7 +98,11 @@ export default function Home() {
 
   return (
     <Grid container direction='column' spacing={3}>
-      <Route render={({ history }) => <SearchBox history={history} />} />
+      <Route
+        render={({ history }) => (
+          <SearchBox history={history} role={'teacher'} />
+        )}
+      />
       <Divider style={{ marginTop: '1em' }} />
       {loading ? (
         <Loader />
@@ -124,7 +135,7 @@ export default function Home() {
                   {item.description}
                 </Typography> */}
                   <Typography variant='body2'>
-                    Συγγραφέας:{' '}
+                    Καθηγητής:{' '}
                     <span className={classes.specialText}>
                       {item.users_p.username}
                     </span>
@@ -140,7 +151,7 @@ export default function Home() {
                   <Button
                     className={classes.continueButton}
                     component={Link}
-                    to={`teacher/quiz/${item.id}`}
+                    to={`/teacher/quiz/${item.id}`}
                   >
                     Περισότερα
                     <ButtonArrow

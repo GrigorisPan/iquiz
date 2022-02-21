@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { store, rootReducer } from '../../src/store.js';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -9,6 +8,14 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   REGISTER_RESET,
+  USER_INFO_CHECK_FAIL,
+  USER_INFO_CHECK_SUCCESS,
+  USER_INFO_CHECK_REQUEST,
+  USER_INFO_CHECK_RESET,
+  REFRESH_INFO_REQUEST,
+  REFRESH_INFO_SUCCESS,
+  REFRESH_INFO_FAIL,
+  REFRESH_INFO_RESET,
 } from '../constants/authConstants';
 import {
   USER_UPDATE_PROFILE_RESET,
@@ -18,7 +25,9 @@ import {
 import {
   QUIZ_DETAILS_RESET,
   QUIZ_LIBRARY_LIST_RESET,
+  QUIZ_LIST_RESET,
 } from '../constants/quizConstants';
+import { STATISTICS_RESET } from '../constants/statisticsConstants.js';
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -59,15 +68,33 @@ export const loginClean = () => (dispatch) => {
   dispatch({ type: LOGOUT });
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => async (dispatch, getState) => {
   localStorage.removeItem('userInfo');
+  try {
+    const {
+      authLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.get('/api/v1/auth/logout', config);
+  } catch (error) {
+    document.cookie =
+      'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+  dispatch({ type: USER_INFO_CHECK_RESET });
+  dispatch({ type: REFRESH_INFO_RESET });
   dispatch({ type: USER_UPDATE_PROFILE_RESET });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
+  dispatch({ type: STATISTICS_RESET });
+  dispatch({ type: QUIZ_LIST_RESET });
   dispatch({ type: QUIZ_LIBRARY_LIST_RESET });
-  dispatch({ type: QUIZ_DETAILS_RESET });
   dispatch({ type: LOGOUT });
-  //rootReducer('LOGOUT');
 };
 
 export const register =
@@ -93,6 +120,7 @@ export const register =
         type: REGISTER_SUCCESS,
         payload: data,
       });
+
       dispatch({
         type: LOGIN_SUCCESS,
         payload: data,
@@ -112,4 +140,69 @@ export const register =
 
 export const registerClean = () => (dispatch) => {
   dispatch({ type: REGISTER_RESET });
+};
+
+export const userCheck = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_INFO_CHECK_REQUEST,
+    });
+
+    const {
+      authLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get('/api/v1/auth/check', config);
+
+    dispatch({
+      type: USER_INFO_CHECK_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_INFO_CHECK_FAIL,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
+
+export const userInfoRefresh = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: REFRESH_INFO_REQUEST,
+    });
+
+    const { data } = await axios.get('/api/v1/auth/refreshToken');
+    /*   data.expiration = new Date(
+      new Date().getTime() + 1000 * 60 * 30
+    ).toISOString(); */
+
+    dispatch({
+      type: REFRESH_INFO_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REFRESH_INFO_FAIL,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
 };

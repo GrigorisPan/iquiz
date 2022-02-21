@@ -197,7 +197,7 @@ export default function Library({ match }) {
                   {item.description}
                 </Typography> */}
                         <Typography variant='body2'>
-                          Συγγραφέας:{' '}
+                          Καθηγητής:{' '}
                           <span className={classes.specialText}>
                             {item.users_p.username}
                           </span>

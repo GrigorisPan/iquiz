@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';

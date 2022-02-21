@@ -1,12 +1,9 @@
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Route, useParams, Link } from 'react-router-dom';
 
 import { Grid } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -19,12 +16,12 @@ import {
   listQuizzes,
   listQuizDetailsClean,
 } from '../../../actions/quizActions';
-import { Link } from 'react-router-dom';
 import Loader from '../../ui/Loader';
 import Button from '@material-ui/core/Button';
 import Message from '../../ui/Message';
 import ButtonArrow from '../../ui/ButtonArrow';
 import { Pagination } from '../../ui/Pagination';
+import SearchBox from '../teacher/components/SearchBox';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -76,39 +73,36 @@ const useStyles = makeStyles((theme) => ({
 export default function HomeSt() {
   const classes = useStyles();
   const theme = useTheme();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const [searched, setSeached] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1);
-
+  const history = useHistory;
   const dispatch = useDispatch();
+
+  const { searched } = useParams();
+
+  let indexOfLast = 1;
+  let indexOfFirst = 1;
+  let currentQuizzes = [];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const quizList = useSelector((state) => state.quizList);
   const { loading, error, quizzes } = quizList;
-  useEffect(() => {
-    dispatch(listQuizzes());
-    dispatch(listQuizDetailsClean());
-  }, [dispatch]);
 
-  // Get current quiz
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentQuizzes = quizzes.slice(indexOfFirst, indexOfLast);
+  useEffect(() => {
+    dispatch(listQuizzes(searched));
+    dispatch(listQuizDetailsClean());
+  }, [dispatch, history, searched]);
+
+  if (!error) {
+    // Get current quiz
+    indexOfLast = currentPage * itemsPerPage;
+    indexOfFirst = indexOfLast - itemsPerPage;
+    currentQuizzes = quizzes.slice(indexOfFirst, indexOfLast);
+  }
 
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  /*  const requestSearch = (searchValue) => {
-    return;
-  };
-
-  const onCancelSearch = () => {
-    setSeached('');
-    requestSearch(searched);
-  }; */
 
   const displayDate = (timestamp) => {
     const todate = new Date(timestamp).getDate();
@@ -120,22 +114,11 @@ export default function HomeSt() {
 
   return (
     <Grid container direction='column' spacing={3}>
-      <Grid item container justify='center'>
-        <Paper className={classes.search}>
-          <InputBase
-            className={classes.input}
-            placeholder='Αναζήτηση'
-            inputProps={{ 'aria-label': 'Search Quiz' }}
-          />
-          <IconButton
-            type='submit'
-            aria-label='search'
-            className={classes.iconButton}
-          >
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-      </Grid>
+      <Route
+        render={({ history }) => (
+          <SearchBox history={history} role={'student'} />
+        )}
+      />
       <Divider style={{ marginTop: '1em' }} />
       {loading ? (
         <Loader />
@@ -168,7 +151,7 @@ export default function HomeSt() {
                   {item.description}
                 </Typography> */}
                   <Typography variant='body2'>
-                    Συγγραφέας:{' '}
+                    Καθηγητής:{' '}
                     <span className={classes.specialText}>
                       {item.users_p.username}
                     </span>

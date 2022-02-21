@@ -17,6 +17,7 @@ import Message from '../../ui/Message';
 
 const columns = [
   { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  { id: 'username', label: 'Username', minWidth: 100, align: 'left' },
   {
     id: 'quiz_id',
     label: 'Quiz Id',
@@ -24,10 +25,16 @@ const columns = [
     align: 'center',
   },
   {
-    id: 'question_num',
-    label: 'Question Number',
-    minWidth: 20,
-    align: 'center',
+    id: 'quiz_title',
+    label: 'Quiz Title',
+    minWidth: 100,
+    align: 'left',
+  },
+  {
+    id: 'question',
+    label: 'Question',
+    minWidth: 100,
+    align: 'left',
   },
   {
     id: 'createdAt',
@@ -52,8 +59,10 @@ const columns = [
 function createData(
   id,
   user_id,
+  username,
   quiz_id,
-  question_num,
+  quiz_title,
+  question,
   createdAt,
   updatedAt,
   more
@@ -61,8 +70,10 @@ function createData(
   return {
     id,
     user_id,
+    username,
     quiz_id,
-    question_num,
+    quiz_title,
+    question,
     createdAt,
     updatedAt,
     more,
@@ -102,7 +113,7 @@ export default function Quizzes() {
     } else {
       dispatch(getReportsAll());
     }
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -113,8 +124,10 @@ export default function Quizzes() {
     let row = createData(
       id,
       report.user_id,
+      report.users_p.username,
       report.quiz_id,
-      report.question_num,
+      report.quiz_p.title,
+      report.question,
       createdAt,
       updatedAt,
       'more'

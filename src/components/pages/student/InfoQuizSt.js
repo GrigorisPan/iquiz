@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -143,7 +142,7 @@ export default function InfoQuizSt() {
                           >
                             replay
                           </Icon>
-                          5 φορές
+                          {quiz.repeat} φορές
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>
@@ -185,7 +184,12 @@ export default function InfoQuizSt() {
                     </List>
                   </Grid>
                   <Grid item style={{ marginTop: '1em ' }} align='center'>
-                    <Button className={classes.moreButton} variant='contained'>
+                    <Button
+                      className={classes.moreButton}
+                      variant='contained'
+                      component={Link}
+                      to={`/game/${quiz.id}`}
+                    >
                       Έναρξη
                     </Button>
                   </Grid>

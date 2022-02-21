@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: 400,
+    width: 300,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -28,16 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBox({ history }) {
+export default function SearchBox({ history, role }) {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [searched, setSeached] = useState('');
 
   const requestSearch = (e) => {
     e.preventDefault();
     if (searched.trim()) {
-      history.push(`/teacher/search/${searched}`);
+      history.push(`/${role}/search/${searched}`);
     } else {
       history.push('/');
     }

@@ -15,24 +15,25 @@ import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
 
 const columns = [
-  { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  { id: 'user_id', label: 'User Id', minWidth: 50, align: 'center' },
+  { id: 'username', label: 'Username', minWidth: 50, align: 'left' },
   {
     id: 'class_id',
     label: 'Class Id',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
-
+  { id: 'class_title', label: 'Class Title', minWidth: 100, align: 'left' },
   {
     id: 'createdAt',
     label: 'CreatedAt',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
   {
     id: 'updatedAt',
     label: 'UpdatedAt',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
   {
@@ -43,11 +44,22 @@ const columns = [
   },
 ];
 
-function createData(id, user_id, class_id, createdAt, updatedAt, more) {
+function createData(
+  id,
+  user_id,
+  username,
+  class_id,
+  class_title,
+  createdAt,
+  updatedAt,
+  more
+) {
   return {
     id,
     user_id,
+    username,
     class_id,
+    class_title,
     createdAt,
     updatedAt,
     more,
@@ -85,7 +97,7 @@ export default function UserInClass() {
     if (!userInfo) {
       history.push('/login', { from: '/admin/users' });
     }
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -96,7 +108,9 @@ export default function UserInClass() {
     let row = createData(
       id,
       user.user_id,
+      user.users_p.username,
       user.class_id,
+      user.digital_class_p.title,
       createdAt,
       updatedAt,
       'more'

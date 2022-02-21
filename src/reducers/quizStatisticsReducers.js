@@ -19,19 +19,19 @@ import {
   STATISTICS_DASHBOARD_REQUEST,
   STATISTICS_DASHBOARD_SUCCESS,
   STATISTICS_DASHBOARD_FAIL,
+  STATISTICS_RESET,
 } from '../constants/statisticsConstants';
 
-export const quizStatisticsReducer = (
-  state = { statistics: [{ reports: [] }] },
-  action
-) => {
+export const quizStatisticsReducer = (state = { statistics: [] }, action) => {
   switch (action.type) {
     case STATISTICS_REQUEST:
       return { ...state, loading: true };
     case STATISTICS_SUCCESS:
       return { loading: false, statistics: action.payload };
     case STATISTICS_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, statistics: [] };
+    case STATISTICS_RESET:
+      return { statistics: [] };
     default:
       return state;
   }

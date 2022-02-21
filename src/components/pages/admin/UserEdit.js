@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import {
   getUserDetails,
@@ -71,7 +71,7 @@ export default function UserEdit() {
         }
       }, 1500);
     };
-  }, [dispatch, history, userInfo, user, isMountedRef]);
+  }, [dispatch, history, id, userInfo, user, isMountedRef]);
 
   const submitHandler = (e) => {
     e.preventDefault();

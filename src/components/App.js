@@ -11,6 +11,7 @@ import LandingPage from './pages/public/LandingPage';
 import Signup from './pages/public/Signup';
 import Login from './pages/public/Login';
 import Layout from './ui/Layout';
+import GameLayout from './ui/GameLayout';
 import Home from './pages/teacher/Home';
 import InfoQuiz from './pages/teacher/InfoQuiz';
 import QuizCreate from './pages/teacher/QuizCreate';
@@ -40,6 +41,9 @@ import QuizEdit from './pages/admin/QuizEdit';
 import Reports from './pages/admin/Reports';
 import SuggestQuizzes from './pages/admin/SuggestQuizzes';
 import StatisticsAd from './pages/admin/StatisticsAd';
+
+import Game from './game/Game';
+
 let login = false;
 let type = undefined;
 
@@ -69,7 +73,6 @@ function App() {
             <Route exact path='/login'>
               <Login />
             </Route>
-            <Route exact path='/contact' component={() => <div>Contact</div>} />
             <Redirect to='/' />
           </Switch>
           <Footer />
@@ -78,69 +81,94 @@ function App() {
     } else if (type === 2) {
       return (
         <React.Fragment>
-          <Layout role={'teacher'}>
-            <Switch>
-              <Route path='/teacher/search/:searched'>
-                <Home />
-              </Route>
-              <Route exact path='/teacher'>
-                <Home />
-              </Route>
-              <Route exact path='/teacher/quiz/:id'>
-                <InfoQuiz match={URL.match} />
-              </Route>
-              <Route exact path='/teacher/create-quiz'>
-                <QuizCreate />
-              </Route>
-              <Route exact path='/teacher/library/'>
-                <Library />
-              </Route>
-              <Route exact path='/teacher/library/edit/:id'>
-                <EditQuiz match={URL.match} />
-              </Route>
-              <Route exact path='/teacher/digiClass'>
-                <DigitalClass />
-              </Route>
-              <Route exact path='/teacher/digiClass/:id'>
-                <InfoClass />
-              </Route>
-              <Route exact path='/teacher/statistics'>
-                <Statistics />
-              </Route>
-              <Route exact path='/profile'>
-                <Profile />
-              </Route>
-              <Redirect to='/teacher' />
-            </Switch>
-          </Layout>
+          <Switch>
+            <Route path={['/game/:id']}>
+              <GameLayout role={'teacher'}>
+                <Switch>
+                  <Route exact path='/game/:id' component={Game} />
+                </Switch>
+              </GameLayout>
+            </Route>
+            <Route path={['/teacher', '/']}>
+              <Layout role={'teacher'}>
+                <Switch>
+                  <Route path='/teacher/search/:searched'>
+                    <Home />
+                  </Route>
+                  <Route exact path='/teacher'>
+                    <Home />
+                  </Route>
+                  <Route exact path='/teacher/quiz/:id'>
+                    <InfoQuiz match={URL.match} />
+                  </Route>
+                  <Route exact path='/teacher/create-quiz'>
+                    <QuizCreate />
+                  </Route>
+                  <Route exact path='/teacher/library/'>
+                    <Library />
+                  </Route>
+                  <Route exact path='/teacher/library/edit/:id'>
+                    <EditQuiz match={URL.match} />
+                  </Route>
+                  <Route exact path='/teacher/digiClass'>
+                    <DigitalClass />
+                  </Route>
+                  <Route exact path='/teacher/digiClass/:id'>
+                    <InfoClass />
+                  </Route>
+                  <Route exact path='/teacher/statistics'>
+                    <Statistics />
+                  </Route>
+                  <Route exact path='/profile'>
+                    <Profile />
+                  </Route>
+                  <Redirect to='/teacher' />
+                </Switch>
+              </Layout>
+            </Route>
+          </Switch>
         </React.Fragment>
       );
     } else if (type === 0) {
       return (
         <React.Fragment>
-          <Layout role={'student'}>
-            <Switch>
-              <Route exact path='/student'>
-                <HomeSt />
-              </Route>
-              <Route exact path='/student/quiz/:id'>
-                <InfoQuizSt match={URL.match} />
-              </Route>
-              <Route exact path='/student/statistics'>
-                <StatisticsSt />
-              </Route>
-              <Route exact path='/student/digiClass'>
-                <DigitalClassSt />
-              </Route>
-              <Route exact path='/student/digiClass/:id'>
-                <InfoClassSt />
-              </Route>
-              <Route exact path='/profile'>
-                <ProfileSt />
-              </Route>
-              <Redirect to='/student' />
-            </Switch>
-          </Layout>
+          <Switch>
+            <Route path={['/game/:id']}>
+              <GameLayout role={'student'}>
+                <Switch>
+                  <Route exact path='/game/:id' component={Game} />
+                </Switch>
+              </GameLayout>
+            </Route>
+            <Route path={['/student', '/']}>
+              <Layout role={'student'}>
+                <Switch>
+                  <Route path='/student/search/:searched'>
+                    <HomeSt />
+                  </Route>
+                  <Route exact path='/student'>
+                    <HomeSt />
+                  </Route>
+                  <Route exact path='/student/quiz/:id'>
+                    <InfoQuizSt match={URL.match} />
+                  </Route>
+                  <Route exact path='/student/statistics'>
+                    <StatisticsSt />
+                  </Route>
+                  <Route exact path='/student/digiClass'>
+                    <DigitalClassSt />
+                  </Route>
+                  <Route exact path='/student/digiClass/:id'>
+                    <InfoClassSt />
+                  </Route>
+                  <Route exact path='/profile'>
+                    <ProfileSt />
+                  </Route>
+                  <Redirect to='/student' />
+                </Switch>
+              </Layout>
+            </Route>
+          </Switch>
         </React.Fragment>
       );
     } else {

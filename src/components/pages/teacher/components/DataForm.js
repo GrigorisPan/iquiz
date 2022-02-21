@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Grid, FormControl } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -68,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 export default function DataForm({
   id,
   title,
+  repeat,
+  setRepeat,
   setTitle,
   time,
   setTime,
@@ -103,11 +105,7 @@ export default function DataForm({
         },
       };
 
-      const res = await axios.put(
-        `/api/v1/quizzes/${id}/photo`,
-        formData,
-        config
-      );
+      await axios.put(`/api/v1/quizzes/${id}/photo`, formData, config);
 
       setCurrentFile(e.target.files[0]);
       setUploadMsg('Επιτυχής');
@@ -121,7 +119,6 @@ export default function DataForm({
       setUploading(true);
     }
   };
-
   return (
     <>
       {error && (
@@ -132,7 +129,7 @@ export default function DataForm({
       {loading && <Loader />}
       {newQuiz && (
         <Grid item container justify='center' style={{ marginBottom: '1em' }}>
-          <Message severity='success'>Success</Message>
+          <Message severity='success'>Επιτυχής!</Message>
         </Grid>
       )}
       <Grid
@@ -163,15 +160,17 @@ export default function DataForm({
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Grid>
-            {/* <Grid item>
-            <TextField
-              required
-              label='Κατηγορία'
-              id='category'
-              autoComplete='false'
-              fullWidth
-            />
-          </Grid> */}
+            <Grid item>
+              <TextField
+                required
+                label='Επανάληψη'
+                id='repeat'
+                autoComplete='false'
+                fullWidth
+                value={repeat}
+                onChange={(e) => setRepeat(e.target.value)}
+              />
+            </Grid>
             <Grid item>
               <FormControl className={classes.formControl}>
                 <InputLabel id='type-user-select-label' required>

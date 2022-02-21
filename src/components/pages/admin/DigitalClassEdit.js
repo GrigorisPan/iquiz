@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -95,7 +95,7 @@ export default function DigitalClassEdit() {
       dispatch(digitalClassUpdateClean());
       setShow(false);
     };
-  }, [dispatch, history, userInfo, dClass, error]);
+  }, [dispatch, history, userInfo, dClass, error, id]);
 
   const updateHandler = (e) => {
     e.preventDefault();

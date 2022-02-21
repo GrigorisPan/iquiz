@@ -70,6 +70,7 @@ export const listQuizzes =
       });
     }
   };
+
 export const listLibraryQuizzes = () => async (dispatch, getState) => {
   try {
     dispatch({ type: QUIZ_LIBRARY_LIST_REQUEST });
@@ -189,7 +190,7 @@ export const otpQuizCheck = (otp) => async (dispatch) => {
     if (res) {
       if (res.data === 'ERROR') {
         //console.log(res.data);
-        throw new Error('Wrong otp code');
+        throw new Error('Λάθος otp κωδικός');
       } else {
         const data = { otpCode: otp, data: res.data };
         dispatch({
@@ -302,7 +303,7 @@ export const quizDelete = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/v1/quizzes/${id}`, config);
+    await axios.delete(`/api/v1/quizzes/${id}`, config);
     dispatch({
       type: QUIZ_DELETE_SUCCESS,
     });

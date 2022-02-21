@@ -26,6 +26,16 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.secondaryButton,
     color: theme.palette.common.blue,
   },
+  deleteButton: {
+    ...theme.typography.mainButton,
+    padding: '0em',
+    marginBottom: '0.35rem',
+    color: '#ff4569',
+    '&:hover': {
+      backgroundColor: '#ff4569',
+      color: '#fff',
+    },
+  },
 }));
 
 export default function StatisticsCard(props) {
@@ -146,7 +156,7 @@ export default function StatisticsCard(props) {
               reports.map((report) => (
                 <Grid
                   item
-                  key={report.question_num}
+                  key={report.user_id - report.quiz_id}
                   container
                   direction='row'
                   justify='center'
@@ -157,9 +167,9 @@ export default function StatisticsCard(props) {
                       variant='body2'
                       style={{ paddingRight: '1em' }}
                     >
-                      Αρ. Ερώτησης:{' '}
+                      Ερώτησης:{' '}
                       <span className={classes.specialText}>
-                        {report.question_num}
+                        {report.question}
                       </span>
                     </Typography>
                   </Grid>
@@ -175,6 +185,17 @@ export default function StatisticsCard(props) {
                       </span>
                     </Typography>
                   </Grid>
+                  <Button
+                    variant='outlined'
+                    className={classes.deleteButton}
+                    onClick={() => {
+                      props.deleteHandler(report.user_id, report.quiz_id);
+                    }}
+                  >
+                    <Icon>
+                      <span className='material-icons-outlined'>clear</span>
+                    </Icon>
+                  </Button>
                 </Grid>
               ))}
           </CardContent>

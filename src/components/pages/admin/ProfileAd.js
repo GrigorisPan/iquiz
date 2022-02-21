@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import {
   getUserDetails,

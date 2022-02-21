@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const iBlue = '#0B72b9';
-const iOrange = '#FFBA60';
+const iOrange = '#ffa42d';
 const iGrey = '#868686';
 
 /* const font = "'Pacifico', cursive";
@@ -134,6 +134,11 @@ export default createMuiTheme({
     },
     /*    MuiStepper: {
       horizontal: { flexDirection: 'row' },
+    }, */
+    /*  MuiCardMedia: {
+      root: {
+        height: '100%',
+      },
     }, */
   },
 });

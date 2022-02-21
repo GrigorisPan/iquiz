@@ -41,6 +41,9 @@ export default function DigitalClass() {
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('sm'));
 
+  let indexOfLast = 1;
+  let indexOfFirst = 1;
+  let currentdClasses = [];
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
@@ -57,9 +60,6 @@ export default function DigitalClass() {
   const err = digitalClassCreate.error;
   const load = digitalClassCreate.loading;
   const success = digitalClassCreate.success;
-
-  const authLogin = useSelector((state) => state.authLogin);
-  const { userInfo } = authLogin;
 
   useEffect(() => {
     dispatch(getDigitalClassList());
@@ -95,11 +95,12 @@ export default function DigitalClass() {
       setOpen(false);
     }
   };
-
-  // Get current digital classes
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentdClasses = dClasses.slice(indexOfFirst, indexOfLast);
+  if (!error) {
+    // Get current digital classes
+    indexOfLast = currentPage * itemsPerPage;
+    indexOfFirst = indexOfLast - itemsPerPage;
+    currentdClasses = dClasses.slice(indexOfFirst, indexOfLast);
+  }
 
   // Change page
   const paginate = (pageNumber) => {
@@ -139,7 +140,7 @@ export default function DigitalClass() {
       </Grid>
       {show && success && (
         <Grid item container justify='center' style={{ marginBottom: '1em' }}>
-          <Message severity='success'>Digital Class Created</Message>
+          <Message severity='success'>Δημιουργήθηκε ψηφιακή τάξη</Message>
         </Grid>
       )}
       {

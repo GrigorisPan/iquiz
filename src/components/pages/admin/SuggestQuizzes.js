@@ -16,24 +16,30 @@ import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
 
 const columns = [
-  { id: 'class_id', label: 'Class Id', minWidth: 20, align: 'center' },
+  { id: 'class_id', label: 'Class Id', minWidth: 50, align: 'center' },
+  { id: 'class_title', label: 'Class Title', minWidth: 100, align: 'left' },
   {
     id: 'quiz_id',
     label: 'Quiz Id',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
-
+  {
+    id: 'quiz_title',
+    label: 'Quiz Title',
+    minWidth: 100,
+    align: 'left',
+  },
   {
     id: 'createdAt',
     label: 'CreatedAt',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
   {
     id: 'updatedAt',
     label: 'UpdatedAt',
-    minWidth: 20,
+    minWidth: 50,
     align: 'center',
   },
   {
@@ -44,11 +50,22 @@ const columns = [
   },
 ];
 
-function createData(id, class_id, quiz_id, createdAt, updatedAt, more) {
+function createData(
+  id,
+  class_id,
+  class_title,
+  quiz_id,
+  quiz_title,
+  createdAt,
+  updatedAt,
+  more
+) {
   return {
     id,
     class_id,
+    class_title,
     quiz_id,
+    quiz_title,
     createdAt,
     updatedAt,
     more,
@@ -88,7 +105,7 @@ export default function SuggestQuizzes() {
     } else {
       dispatch(listSuggestQuizAll());
     }
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -99,7 +116,9 @@ export default function SuggestQuizzes() {
     let row = createData(
       id,
       suggest.class_id,
+      suggest.quiz_p.title,
       suggest.quiz_id,
+      suggest.digital_class_p.title,
       createdAt,
       updatedAt,
       'more'

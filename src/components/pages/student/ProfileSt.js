@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import {
   getUserDetails,
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileSt() {
   const classes = useStyles();
   let history = useHistory();
-  const isMountedRef = useRef('false');
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -45,28 +44,17 @@ export default function ProfileSt() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    isMountedRef.current = true;
-
-    if (!userInfo) {
-      history.push('/login', { from: 'Profile' });
-    } else {
-      if (!user.username) {
-        dispatch(getUserDetails(userInfo.id));
-      } else {
-        setUsername(user.username);
-        setEmail(user.email);
-      }
+    if (!username) {
+      dispatch(getUserDetails(userInfo.id));
     }
+  }, [dispatch, history, userInfo, username]);
 
-    return () => {
-      setTimeout(() => {
-        isMountedRef.current = false;
-        if (!isMountedRef.current) {
-          dispatch(updateUserClean());
-        }
-      }, 2300);
-    };
-  }, [dispatch, history, userInfo, user, isMountedRef]);
+  useEffect(() => {
+    if (user.username) {
+      setUsername(user.username);
+      setEmail(user.email);
+    }
+  }, [dispatch, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -76,14 +64,13 @@ export default function ProfileSt() {
       setTimeout(() => {
         setShow(false);
         setMessage('');
-        isMountedRef.current = true;
       }, 1500);
     } else {
       dispatch(updateUserProfile(userInfo.id, { username, email, password }));
       setShow(true);
       setTimeout(() => {
         setShow(false);
-        isMountedRef.current = true;
+        dispatch(updateUserClean());
       }, 1500);
     }
 

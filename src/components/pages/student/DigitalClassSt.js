@@ -37,26 +37,29 @@ export default function DigitalClassSt() {
   const theme = useTheme();
   const matchesXS = useMediaQuery(theme.breakpoints.down('sm'));
 
+  let indexOfLast = 1;
+  let indexOfFirst = 1;
+  let currentdClasses = [];
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(2);
+  const [itemsPerPage] = useState(5);
 
   const dispatch = useDispatch();
 
   const digitalClassList = useSelector((state) => state.digitalClassList);
   const { loading, error, dClasses } = digitalClassList;
 
-  const authLogin = useSelector((state) => state.authLogin);
-  const { userInfo } = authLogin;
-
   useEffect(() => {
     dispatch(getDigitalClassList());
     dispatch(digitalClassClean());
   }, [dispatch]);
 
-  // Get current digital classes
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentdClasses = dClasses.slice(indexOfFirst, indexOfLast);
+  if (!error) {
+    // Get current digital classes
+    indexOfLast = currentPage * itemsPerPage;
+    indexOfFirst = indexOfLast - itemsPerPage;
+    currentdClasses = dClasses.slice(indexOfFirst, indexOfLast);
+  }
 
   // Change page
   const paginate = (pageNumber) => {

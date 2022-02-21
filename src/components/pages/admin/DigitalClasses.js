@@ -21,6 +21,7 @@ import Message from '../../ui/Message';
 const columns = [
   { id: 'id', label: 'Id', minWidth: 20, align: 'center' },
   { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  { id: 'username', label: 'Username', minWidth: 100, align: 'left' },
   {
     id: 'title',
     label: 'Title',
@@ -56,13 +57,23 @@ const columns = [
 function createData(
   id,
   user_id,
+  username,
   title,
   description,
   createdAt,
   updatedAt,
   more
 ) {
-  return { id, user_id, title, description, createdAt, updatedAt, more };
+  return {
+    id,
+    user_id,
+    username,
+    title,
+    description,
+    createdAt,
+    updatedAt,
+    more,
+  };
 }
 
 const displayDate = (timestamp) => {
@@ -99,7 +110,7 @@ export default function DigitalClasses() {
       /* dispatch(userDetailsClean()); */
       dispatch(getDigitalClassListAll());
     }
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -109,6 +120,7 @@ export default function DigitalClasses() {
     let row = createData(
       dClass.id,
       dClass.user_id,
+      dClass.users_p.username,
       dClass.title,
       dClass.description,
       createdAt,

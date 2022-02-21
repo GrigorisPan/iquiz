@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
@@ -20,12 +20,19 @@ import Message from '../../ui/Message';
 
 const columns = [
   { id: 'id', label: 'Id', minWidth: 20, align: 'center' },
-  { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
+  { id: 'user_id', label: 'User Id', minWidth: 50, align: 'center' },
+  { id: 'username', label: 'Username', minWidth: 80, align: 'left' },
   {
     id: 'title',
     label: 'Title',
     minWidth: 100,
     align: 'left',
+  },
+  {
+    id: 'repeat',
+    label: 'Repeat',
+    minWidth: 100,
+    align: 'center',
   },
   {
     id: 'description',
@@ -48,7 +55,13 @@ const columns = [
   {
     id: 'photo',
     label: 'Photo',
-    minWidth: 20,
+    minWidth: 50,
+    align: 'left',
+  },
+  {
+    id: 'photo_name',
+    label: 'Photo Name',
+    minWidth: 50,
     align: 'left',
   },
   {
@@ -80,11 +93,14 @@ const columns = [
 function createData(
   id,
   user_id,
+  username,
   title,
+  repeat,
   description,
   time,
   otp,
   photo,
+  photo_name,
   status,
   createdAt,
   updatedAt,
@@ -93,11 +109,14 @@ function createData(
   return {
     id,
     user_id,
+    username,
     title,
+    repeat,
     description,
     time,
     otp,
     photo,
+    photo_name,
     status,
     createdAt,
     updatedAt,
@@ -142,7 +161,7 @@ export default function Quizzes() {
     return () => {
       dispatch(listLibraryQuizDetailsClean());
     };
-  }, [dispatch, history, successDelete, errorDelete]);
+  }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
 
@@ -152,11 +171,14 @@ export default function Quizzes() {
     let row = createData(
       quiz.id,
       quiz.user_id,
+      quiz.users_p.username,
       quiz.title,
+      quiz.repeat,
       quiz.description,
       quiz.time,
       quiz.questions_otp,
       quiz.photo,
+      quiz.photo_name,
       quiz.status,
       createdAt,
       updatedAt,

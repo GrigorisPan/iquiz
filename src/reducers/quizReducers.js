@@ -30,6 +30,7 @@ import {
   QUIZ_LIBRARY_DETAILS_RESET,
   QUIZ_DELETE_RESET,
   QUIZ_LIBRARY_LIST_RESET,
+  QUIZ_LIST_RESET,
 } from '../constants/quizConstants';
 
 export const quizListReducer = (state = { quizzes: [] }, action) => {
@@ -40,6 +41,8 @@ export const quizListReducer = (state = { quizzes: [] }, action) => {
       return { loading: false, quizzes: action.payload };
     case QUIZ_LIST_FAIL:
       return { loading: false, error: action.payload };
+    case QUIZ_LIST_RESET:
+      return { quizzes: [] };
     default:
       return state;
   }

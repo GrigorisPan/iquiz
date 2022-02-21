@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { LOGOUT } from '../../../client/iquiz/src/constants/authConstants';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+
 import {
   quizDetailsReducer,
   quizListReducer,
@@ -29,7 +29,12 @@ import {
   digitalClassDeletedReducer,
   digitalClassUpdateReducer,
 } from './reducers/digitalClassReducers';
-import { authLoginReducer, authRegisterReducer } from './reducers/authReducers';
+import {
+  authLoginReducer,
+  authRegisterReducer,
+  authCheckReducer,
+  authRefreshReducer,
+} from './reducers/authReducers';
 import {
   userDeletedReducer,
   userDetailsReducer,
@@ -43,13 +48,23 @@ import {
   quizSuggestReducer,
 } from './reducers/quizSuggestReducers';
 import {
+  gameReportReducer,
   reportDeletedReducer,
   reportListReducer,
 } from './reducers/reportReducers';
+import {
+  checkPlayReducer,
+  gameStateReducer,
+  gameReducer,
+  gameSaveScoreReducer,
+  gameUpdateScoreReducer,
+} from './reducers/gameReducers';
 
 const reducer = combineReducers({
   authLogin: authLoginReducer,
   authRegister: authRegisterReducer,
+  authCheck: authCheckReducer,
+  authRefresh: authRefreshReducer,
   statisticsDashboard: statisticsDashboardReducer,
   userList: userListReducer,
   userDetails: userDetailsReducer,
@@ -81,6 +96,12 @@ const reducer = combineReducers({
   reportList: reportListReducer,
   reportDeleted: reportDeletedReducer,
   otpCheck: otpCheckReducer,
+  checkPlay: checkPlayReducer,
+  gameState: gameStateReducer,
+  game: gameReducer,
+  gameSaveScore: gameSaveScoreReducer,
+  gameUpdateScore: gameUpdateScoreReducer,
+  gameReport: gameReportReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -99,7 +120,7 @@ let store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-export const rootReducer = (action) => {
+/* export const rootReducer = (action) => {
   if (action === 'LOGOUT') {
     store = createStore(
       reducer,
@@ -108,6 +129,6 @@ export const rootReducer = (action) => {
     );
   }
   return store;
-};
+}; */
 
 export default store;

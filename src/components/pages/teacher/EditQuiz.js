@@ -49,6 +49,7 @@ export default function EditQuiz({ match }) {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState('');
+  const [repeat, setRepeat] = useState('');
   const [time, setTime] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
@@ -71,6 +72,7 @@ export default function EditQuiz({ match }) {
         dispatch(listLibraryQuizDetails(id));
       } else {
         setTitle(quiz.title);
+        setRepeat(quiz.repeat);
         setTime(quiz.time);
         setDescription(quiz.description);
         setStatus(quiz.status);
@@ -93,7 +95,14 @@ export default function EditQuiz({ match }) {
   const updateHandler = () => {
     const questions_otp = quiz.questions_otp;
     dispatch(
-      quizUpdateInfo(id, { title, description, time, questions_otp, status })
+      quizUpdateInfo(id, {
+        title,
+        repeat,
+        description,
+        time,
+        questions_otp,
+        status,
+      })
     );
     setShow(true);
     setTimeout(() => {
@@ -106,7 +115,6 @@ export default function EditQuiz({ match }) {
     dispatch(listLibraryQuizDetailsClean());
     dispatch(quizUpdateClean());
   };
-
   return (
     <Grid container direction='column' spacing={3}>
       <Grid item container justify='center'>
@@ -177,6 +185,8 @@ export default function EditQuiz({ match }) {
                     id={id}
                     title={title}
                     setTitle={setTitle}
+                    repeat={repeat}
+                    setRepeat={setRepeat}
                     time={time}
                     setTime={setTime}
                     description={description}
