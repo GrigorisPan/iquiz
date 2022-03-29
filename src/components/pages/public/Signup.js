@@ -15,7 +15,7 @@ import Loader from '../../ui/Loader';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    minHeight: '88vh',
+    minHeight: '80vh',
   },
   mainContainer: {
     minHeight: '38em',
@@ -75,7 +75,7 @@ export default function Signup() {
         dispatch(registerClean());
       }, 1500);
     }
-  }, [dispatch, error, show]);
+  }, [dispatch, error]);
 
   const submitHandler = (e) => {
     e.preventDefault();

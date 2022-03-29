@@ -27,7 +27,10 @@ export const getReportsAll = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/reports/all`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/reports/all`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -61,7 +64,10 @@ export const reportDelete = (id) => async (dispatch, getState) => {
       },
     };
     //console.log(config);
-    const res = await axios.delete(`/api/v1/reports/${id}`, config);
+    const res = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/reports/${id}`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -99,7 +105,11 @@ export const reportCreate = (body) => async (dispatch, getState) => {
       },
     };
     //console.log(config);
-    const res = await axios.post(`/api/v1/reports/`, body, config);
+    const res = await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/reports/`,
+      body,
+      config
+    );
 
     const data = res.data.data;
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,13 +21,18 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import List from '@material-ui/core/List';
-
+import Button from '@material-ui/core/Button';
 import { listSuggestQuiz } from '../../../actions/suggestAction';
 import { getScore } from '../../../actions/statisticsAction';
 import { getUsersInClass } from '../../../actions/statisticsAction';
-import { getDigitalClass } from '../../../actions/digitalClassActions';
+import {
+  deleteDigitalClass,
+  deleteDigitalClassClean,
+  getDigitalClass,
+} from '../../../actions/digitalClassActions';
 import Message from '../../ui/Message';
 import Loader from '../../ui/Loader';
+import DeleteModal from './components/DeleteModal';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -40,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '70%',
     padding: theme.spacing(4),
+    marginTop: '0.5em',
     overflow: 'auto',
     [theme.breakpoints.down('sm')]: {
       maxWidth: '100%',
@@ -49,6 +55,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 500,
     [theme.breakpoints.down('xs')]: {
       minWidth: '100%',
+    },
+  },
+  deleteButton: {
+    ...theme.typography.mainButton,
+    backgroundColor: '#ff1744',
+    color: '#ffff',
+    '&:hover': {
+      backgroundColor: '#ff4569',
     },
   },
 }));
@@ -65,8 +79,15 @@ export default function InfoClass() {
   const { id } = useParams();
   let history = useHistory();
 
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
+  const [show, setShow] = useState(false);
+
   const digitalClass = useSelector((state) => state.digitalClass);
   const { loading, error, dClass } = digitalClass;
+
+  const digitalClassDeleted = useSelector((state) => state.digitalClassDeleted);
+  const { success: successDelete, error: errorDelete } = digitalClassDeleted;
 
   const quizSuggest = useSelector((state) => state.quizSuggest);
   const { suggest } = quizSuggest;
@@ -96,6 +117,29 @@ export default function InfoClass() {
     }
   }, [dispatch, id, history, error]);
 
+  //Delete function
+  const deleteHandler = (id) => {
+    dispatch(deleteDigitalClass(id));
+
+    setShow(true);
+    setOpen(false);
+    setTimeout(() => {
+      setShow(false);
+      history.push('/teacher/digiClass', { from: 'digiClass/:id' });
+      dispatch(deleteDigitalClassClean());
+    }, 1500);
+  };
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+      setDeleteId(0);
+    }
+  };
+
   return (
     <Grid container direction='column' className={classes.mainContainer}>
       {loading ? (
@@ -106,7 +150,25 @@ export default function InfoClass() {
         </Grid>
       ) : (
         <>
+          <DeleteModal
+            open={open}
+            setDeleteId={setDeleteId}
+            setOpen={setOpen}
+            deleteHandler={deleteHandler}
+            deleteId={deleteId}
+            handleClose={handleClose}
+          />
           <Grid item container justify='center' className={classes.container}>
+            {show && errorDelete && (
+              <Grid container justify='center' style={{ marginBottom: '1em' }}>
+                <Message severity='error'>Σφάλμα</Message>
+              </Grid>
+            )}
+            {show && successDelete && (
+              <Grid container justify='center'>
+                <Message severity='success'>Επιτυχής διαγραφή!</Message>
+              </Grid>
+            )}
             <Card className={classes.root}>
               <Grid item container direction='row'>
                 <Grid item sm={matchesXS ? 6 : 9}>
@@ -164,6 +226,21 @@ export default function InfoClass() {
                             {dClass.id}
                           </span>
                         </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          className={classes.deleteButton}
+                          onClick={() => {
+                            setDeleteId(dClass.id);
+                            handleClickOpen();
+                          }}
+                        >
+                          <Icon>
+                            <span className='material-icons-outlined'>
+                              delete
+                            </span>
+                          </Icon>
+                        </Button>
                       </Grid>
                     </CardContent>
                   </Grid>

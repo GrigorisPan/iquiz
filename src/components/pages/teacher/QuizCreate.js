@@ -78,8 +78,17 @@ export default function QuizCreate() {
   const handlerCreate = () => {
     //console.log(title, time, description, status);
     const questions_otp = questions.otpCode;
+    const questions_count = questions.questions_count;
     dispatch(
-      quizNew({ title, repeat, description, time, questions_otp, status })
+      quizNew({
+        title,
+        repeat,
+        description,
+        time,
+        questions_otp,
+        questions_count,
+        status,
+      })
     );
   };
 

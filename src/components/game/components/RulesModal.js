@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   textRules: {
     fontSize: '1.15em',
   },
+  specialText: {
+    fontWeight: '500',
+  },
 }));
 
 export default function RulesModal({ open, setOpen, handleClose }) {
@@ -52,6 +55,9 @@ export default function RulesModal({ open, setOpen, handleClose }) {
 
   const checkPlay = useSelector((state) => state.checkPlay);
   const { loading, canPlay } = checkPlay;
+
+  const quizDetails = useSelector((state) => state.quizDetails);
+  const { quiz } = quizDetails;
 
   return (
     <Grid container direction='column' spacing={3}>
@@ -92,8 +98,9 @@ export default function RulesModal({ open, setOpen, handleClose }) {
                   variant='body2'
                   className={classes.textRules}
                 >
-                  1. You will have only <span>15 seconds</span> per each
-                  question.
+                  1. Σε περίπτωση αλλαγής σελίδα το παιχνίδι{' '}
+                  <span className={classes.specialText}>τερματίζεται </span>{' '}
+                  αυτόματα.
                 </Typography>
                 <Typography
                   component='div'
@@ -101,23 +108,27 @@ export default function RulesModal({ open, setOpen, handleClose }) {
                   variant='body2'
                   className={classes.textRules}
                 >
-                  2. Once you select your answer, it can't be undone.
+                  2. Σε περίπτωση ανανέωσης της σελίδα το παιχνίδι{' '}
+                  <span className={classes.specialText}>τερματίζεται </span>
+                  αυτόματα.
                 </Typography>
+                {/*  <Typography
+              component='div'
+              variant='body2'
+              gutterBottom
+              className={classes.textRules}
+            >
+              3. Η κατηγορία παιχνιδιού που έχει οριστεί είναι{' '}
+              <span className={classes.specialText}>{gameType}</span>.
+            </Typography> */}
                 <Typography
                   component='div'
-                  variant='body2'
-                  gutterBottom
-                  className={classes.textRules}
-                >
-                  3. You can't select any option once time goes off.
-                </Typography>
-                <Typography
-                  component='div'
                   gutterBottom
                   variant='body2'
                   className={classes.textRules}
                 >
-                  4. You can't exit from the Quiz while you're playing.
+                  4. Η χρονική διάρκεια κάθε ερώτησης που έχει οριστεί είναι{' '}
+                  <span className={classes.specialText}>{quiz.time}s</span>.
                 </Typography>
               </Grid>
             </DialogContent>

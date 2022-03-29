@@ -7,7 +7,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
-    minHeight: '88vh',
+    minHeight: '80vh',
     alignItems: 'center',
   },
   iconContainer: {

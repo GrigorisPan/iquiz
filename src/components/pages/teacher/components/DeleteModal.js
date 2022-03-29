@@ -68,7 +68,7 @@ export default function DeleteModal({
                 marginBottom: '1em',
               }}
             >
-              Διαγραφή <span className={classes.specialText}>Κουίζ;</span>
+              Οριστική <span className={classes.specialText}>διαγραφή</span> ;
             </Typography>
             <Grid
               item

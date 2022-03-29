@@ -164,7 +164,7 @@ export default function InfoQuiz() {
                           >
                             <span>quiz</span>
                           </Icon>
-                          {quiz.time} ερωτήσεις
+                          {quiz.questions_count} ερωτήσεις
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>

@@ -153,10 +153,10 @@ export default function MainGame() {
                     </Typography>
 
                     <Typography variant='subtitle2'>
-                      Συγγραφέας:{' '}
+                      Ερωτήσεις:{' '}
                       <span className={classes.specialText}>
                         {' '}
-                        {quiz.users_p.username}
+                        {quiz.questions_count}
                       </span>
                     </Typography>
                   </CardContent>

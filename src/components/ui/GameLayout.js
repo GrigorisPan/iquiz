@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import Copyright from './Copyright';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,9 +9,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { logout, userCheck, userInfoRefresh } from '../../actions/authActions';
 

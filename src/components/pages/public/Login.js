@@ -13,7 +13,7 @@ import Loader from '../../ui/Loader';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    minHeight: '88vh',
+    minHeight: '80vh',
   },
   mainContainer: {
     minHeight: '37em',
@@ -74,7 +74,7 @@ export default function Login({ history, location }) {
         dispatch(loginClean());
       }, 1500);
     }
-  }, [dispatch, error, show]);
+  }, [dispatch, error]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -162,7 +162,7 @@ export default function Login({ history, location }) {
                     align='center'
                     style={{ marginTop: '1em' }}
                   >
-                    <Link href='#'>Ξεχάσατε τον κωδικό πρόσβασης;</Link>
+                    <Link to='/forgot'>Ξεχάσατε τον κωδικό πρόσβασης;</Link>
                   </Typography>
                   <Grid item>
                     {loading && <Loader />}
@@ -195,6 +195,8 @@ export default function Login({ history, location }) {
                 variant='outlined'
                 style={{ marginTop: '2em' }}
                 className={classes.continueButton}
+                component={Link}
+                to={'/livegame/landing'}
               >
                 Συνέχεια
                 <ButtonArrow

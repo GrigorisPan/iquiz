@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -97,7 +97,12 @@ export default function QuizActions(props) {
               </ListItemIcon>
             </Grid>
             <Grid item xs={12} sm={12} md={8}>
-              <Button variant='outlined' className={classes.continueButton}>
+              <Button
+                variant='outlined'
+                className={classes.continueButton}
+                component={Link}
+                to={`/livegame/host/${quiz_id}`}
+              >
                 Δημιουργία Ψηφιακής Αίθουσας
               </Button>
             </Grid>

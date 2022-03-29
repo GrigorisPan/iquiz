@@ -30,7 +30,10 @@ export const listSuggestQuizAll = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/suggestquiz/all`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/suggestquiz/all`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -54,7 +57,9 @@ export const listSuggestQuiz = (id) => async (dispatch) => {
   try {
     dispatch({ type: SUGGEST_LIST_REQUEST });
 
-    const res = await axios.get(`/api/v1/suggestquiz/${id}`);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/suggestquiz/${id}`
+    );
 
     const data = res.data.data;
 
@@ -89,7 +94,10 @@ export const listDclassSuggest = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/suggestquiz/available/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/suggestquiz/available/${id}`,
+      config
+    );
     const data = res.data.data;
 
     dispatch({
@@ -127,7 +135,11 @@ export const addSuggestQuiz = (body) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.put(`/api/v1/suggestquiz/add/`, body, config);
+    const res = await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/suggestquiz/add/`,
+      body,
+      config
+    );
     const data = res.data.data;
 
     dispatch({
@@ -165,7 +177,10 @@ export const deleteSuggestQuiz = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.delete(`/api/v1/suggestquiz/${id}`, config);
+    const res = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/suggestquiz/${id}`,
+      config
+    );
     const data = res.data.data;
 
     dispatch({

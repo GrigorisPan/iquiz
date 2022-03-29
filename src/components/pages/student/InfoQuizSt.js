@@ -114,7 +114,7 @@ export default function InfoQuizSt() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
@@ -131,7 +131,7 @@ export default function InfoQuizSt() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
@@ -148,7 +148,7 @@ export default function InfoQuizSt() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{
@@ -165,7 +165,7 @@ export default function InfoQuizSt() {
                       <ListItem style={{ padding: '0.1em 0em' }}>
                         <ListItemIcon
                           className={classes.specialText}
-                          style={{ marginRight: '0.5em', fontSize: '0.8em' }}
+                          style={{ marginRight: '0.5em', fontSize: '0.9em' }}
                         >
                           <Icon
                             style={{

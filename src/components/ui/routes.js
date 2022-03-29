@@ -45,6 +45,12 @@ export const studentRoutes = [
     icon: 'school',
     activeIndex: 2,
   },
+  {
+    name: 'Live Κουίζ',
+    link: '/livegame/landing',
+    icon: 'quiz',
+    activeIndex: 3,
+  },
 ];
 
 export const adminRoutes = [

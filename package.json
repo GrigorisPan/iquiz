@@ -1,7 +1,7 @@
 {
   "name": "iquiz",
-  "proxy": "http://127.0.0.1:5000",
   "version": "0.1.0",
+  "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
@@ -20,6 +20,7 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
+    "socket.io-client": "^4.4.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

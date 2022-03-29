@@ -33,7 +33,10 @@ export const getUsersList = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/v1/users/`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/users/`,
+      config
+    );
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -67,7 +70,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/v1/users/${id}`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/users/${id}`,
+      config
+    );
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -107,7 +113,10 @@ export const userDelete = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/v1/users/${id}`, config);
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/users/${id}`,
+      config
+    );
 
     dispatch({
       type: USER_DELETE_SUCCESS,
@@ -147,7 +156,11 @@ export const updateUserProfile = (id, user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/v1/users/${id}`, user, config);
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/users/${id}`,
+      user,
+      config
+    );
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,

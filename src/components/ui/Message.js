@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Message({ severity, children, width }) {
+export default function Message({ severity, children }) {
   const classes = useStyles();
 
   return (

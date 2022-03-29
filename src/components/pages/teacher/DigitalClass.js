@@ -45,7 +45,7 @@ export default function DigitalClass() {
   let indexOfFirst = 1;
   let currentdClasses = [];
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -58,7 +58,6 @@ export default function DigitalClass() {
 
   const digitalClassCreate = useSelector((state) => state.digitalClassCreate);
   const err = digitalClassCreate.error;
-  const load = digitalClassCreate.loading;
   const success = digitalClassCreate.success;
 
   useEffect(() => {

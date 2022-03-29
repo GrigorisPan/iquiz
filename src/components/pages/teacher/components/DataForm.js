@@ -105,7 +105,11 @@ export default function DataForm({
         },
       };
 
-      await axios.put(`/api/v1/quizzes/${id}/photo`, formData, config);
+      await axios.put(
+        `${process.env.REACT_APP_URL_API}/api/v1/quizzes/${id}/photo`,
+        formData,
+        config
+      );
 
       setCurrentFile(e.target.files[0]);
       setUploadMsg('Επιτυχής');
@@ -255,35 +259,6 @@ export default function DataForm({
           </Grid>
         )}
       </Grid>
-
-      {/*   <Grid item>
-          <form className={classes.dateTime} noValidate>
-            <TextField
-              id='start dateTime'
-              label='Έναρξη'
-              type='datetime-local'
-              defaultValue='2021-01-01T10:30'
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </form>
-        </Grid>
-        <Grid item>
-          <form className={classes.dateTime} noValidate>
-            <TextField
-              id='end dateTime'
-              label='Λήξη'
-              type='datetime-local'
-              defaultValue='2021-01-01T10:30'
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </form>
-        </Grid> */}
     </>
   );
 }

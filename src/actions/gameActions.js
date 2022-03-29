@@ -44,7 +44,10 @@ export const checkCanPlay = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/game/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/game/${id}`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -80,7 +83,10 @@ export const checkCanReport = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/reports/check/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/reports/check/${id}`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -117,7 +123,10 @@ export const fetchingQuestions = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/game/play/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/game/play/${id}`,
+      config
+    );
 
     const data = res.data.data.questions.question;
     dispatch({
@@ -185,7 +194,11 @@ export const saveGame = (body) => async (dispatch, getState) => {
       },
     };
 
-    await axios.post('/api/v1/game/save', body, config);
+    await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/game/save`,
+      body,
+      config
+    );
 
     dispatch({
       type: SAVE_GAME_SCORE_SUCCESS,
@@ -211,7 +224,11 @@ export const updateGame = (body) => async (dispatch, getState) => {
       },
     };
 
-    await axios.put('/api/v1/game/save', body, config);
+    await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/game/save`,
+      body,
+      config
+    );
 
     dispatch({
       type: UPDATE_GAME_SCORE_SUCCESS,

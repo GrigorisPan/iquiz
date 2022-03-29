@@ -35,7 +35,10 @@ export const getStatisticsAll = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/statistics/all`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/all`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -68,7 +71,10 @@ export const getStatisticsDash = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/statistics/dashboard`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/dashboard`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -101,7 +107,10 @@ export const getStatistics = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/statistics/`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -136,7 +145,10 @@ export const deleteStatistics = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.delete(`/api/v1/statistics/${id}`, config);
+    const res = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/${id}`,
+      config
+    );
     const data = res.data.data;
 
     dispatch({
@@ -174,7 +186,10 @@ export const getScore = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/statistics/score/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/score/${id}`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -207,7 +222,10 @@ export const getAllUsersInClass = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/statistics/users/all`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/users/all`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -240,7 +258,10 @@ export const getUsersInClass = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const res = await axios.get(`/api/v1/statistics/users/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/users/${id}`,
+      config
+    );
 
     const data = res.data;
 
@@ -275,7 +296,10 @@ export const deleteUserInClass = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.delete(`/api/v1/statistics/users/${id}`, config);
+    const res = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/statistics/users/${id}`,
+      config
+    );
     const data = res.data.data;
 
     dispatch({

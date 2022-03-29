@@ -50,7 +50,7 @@ export const listQuizzes =
       };
 
       const res = await axios.get(
-        `/api/v1/quizzes/?searched=${searched}`,
+        `${process.env.REACT_APP_URL_API}/api/v1/quizzes/?searched=${searched}`,
         config
       );
 
@@ -86,7 +86,10 @@ export const listLibraryQuizzes = () => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get('/api/v1/quizzes/all', config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/all`,
+      config
+    );
 
     const data = res.data.data;
 
@@ -120,7 +123,10 @@ export const listQuizDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/quizzes/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/${id}`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -157,7 +163,10 @@ export const listLibraryQuizDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/quizzes/all/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/all/${id}`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -192,7 +201,12 @@ export const otpQuizCheck = (otp) => async (dispatch) => {
         //console.log(res.data);
         throw new Error('Λάθος otp κωδικός');
       } else {
-        const data = { otpCode: otp, data: res.data };
+        const count =
+          new DOMParser()
+            .parseFromString(res.data, 'text/xml')
+            .getElementsByTagName('question').length || 0;
+
+        const data = { otpCode: otp, questions_count: count, data: res.data };
         dispatch({
           type: OTP_CHECK_SUCCESS,
           payload: data,
@@ -227,7 +241,11 @@ export const quizNew = (body) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.post('/api/v1/quizzes/', body, config);
+    const res = await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/`,
+      body,
+      config
+    );
 
     const data = res.data.data;
 
@@ -265,7 +283,11 @@ export const quizUpdateInfo = (id, body) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.put(`/api/v1/quizzes/${id}`, body, config);
+    const res = await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/${id}`,
+      body,
+      config
+    );
 
     const data = res.data.data;
 
@@ -303,7 +325,10 @@ export const quizDelete = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/v1/quizzes/${id}`, config);
+    await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/quizzes/${id}`,
+      config
+    );
     dispatch({
       type: QUIZ_DELETE_SUCCESS,
     });

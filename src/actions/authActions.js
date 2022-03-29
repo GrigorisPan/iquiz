@@ -16,6 +16,14 @@ import {
   REFRESH_INFO_SUCCESS,
   REFRESH_INFO_FAIL,
   REFRESH_INFO_RESET,
+  FORGOT_PASSWORD_RESET,
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_REQUEST,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
+  RESET_PASSWORD_RESET,
 } from '../constants/authConstants';
 import {
   USER_UPDATE_PROFILE_RESET,
@@ -23,7 +31,6 @@ import {
   USER_LIST_RESET,
 } from '../constants/userConstants';
 import {
-  QUIZ_DETAILS_RESET,
   QUIZ_LIBRARY_LIST_RESET,
   QUIZ_LIST_RESET,
 } from '../constants/quizConstants';
@@ -42,7 +49,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      '/api/v1/auth/login',
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/login`,
       { email, password },
       config
     );
@@ -81,7 +88,10 @@ export const logout = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    await axios.get('/api/v1/auth/logout', config);
+    await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/logout`,
+      config
+    );
   } catch (error) {
     document.cookie =
       'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -111,7 +121,7 @@ export const register =
       };
 
       const { data } = await axios.post(
-        '/api/v1/auth/register',
+        `${process.env.REACT_APP_URL_API}/api/v1/auth/register`,
         { username, email, type, password },
         config
       );
@@ -142,6 +152,80 @@ export const registerClean = () => (dispatch) => {
   dispatch({ type: REGISTER_RESET });
 };
 
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: FORGOT_PASSWORD_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/forgotpassword`,
+      { email },
+      config
+    );
+
+    dispatch({
+      type: FORGOT_PASSWORD_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FORGOT_PASSWORD_FAIL,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
+
+export const forgotPasswordClean = () => (dispatch) => {
+  dispatch({ type: FORGOT_PASSWORD_RESET });
+};
+
+export const resetPassword = (password, resettoken) => async (dispatch) => {
+  try {
+    dispatch({
+      type: RESET_PASSWORD_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/resetpassword/${resettoken}`,
+      { password },
+      config
+    );
+
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: RESET_PASSWORD_FAIL,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.error,
+    });
+  }
+};
+
+export const resetPasswordClean = () => (dispatch) => {
+  dispatch({ type: RESET_PASSWORD_RESET });
+};
+
 export const userCheck = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -159,7 +243,10 @@ export const userCheck = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get('/api/v1/auth/check', config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/check`,
+      config
+    );
 
     dispatch({
       type: USER_INFO_CHECK_SUCCESS,
@@ -182,7 +269,9 @@ export const userInfoRefresh = () => async (dispatch) => {
       type: REFRESH_INFO_REQUEST,
     });
 
-    const { data } = await axios.get('/api/v1/auth/refreshToken');
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/auth/refreshToken`
+    );
     /*   data.expiration = new Date(
       new Date().getTime() + 1000 * 60 * 30
     ).toISOString(); */

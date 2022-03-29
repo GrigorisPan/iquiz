@@ -15,6 +15,14 @@ import {
   REFRESH_INFO_SUCCESS,
   REFRESH_INFO_FAIL,
   REFRESH_INFO_RESET,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_RESET,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
+  RESET_PASSWORD_RESET,
 } from '../constants/authConstants';
 
 export const authLoginReducer = (state = {}, action) => {
@@ -41,6 +49,36 @@ export const authRegisterReducer = (state = {}, action) => {
     case REGISTER_FAIL:
       return { loading: false, error: action.payload };
     case REGISTER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const authForgotReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FORGOT_PASSWORD_REQUEST:
+      return { loading: true };
+    case FORGOT_PASSWORD_SUCCESS:
+      return { loading: false, success: true, msg: action.payload };
+    case FORGOT_PASSWORD_FAIL:
+      return { loading: false, error: action.payload };
+    case FORGOT_PASSWORD_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const authResetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case RESET_PASSWORD_REQUEST:
+      return { loading: true };
+    case RESET_PASSWORD_SUCCESS:
+      return { loading: false, success: true, msg: action.payload };
+    case RESET_PASSWORD_FAIL:
+      return { loading: false, error: action.payload };
+    case RESET_PASSWORD_RESET:
       return {};
     default:
       return state;

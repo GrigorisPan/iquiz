@@ -116,12 +116,6 @@ export default function InfoClassSt() {
                         <Typography gutterBottom variant='h6'>
                           {dClass.title}
                         </Typography>
-                        {/* <Typography gutterBottom variant='subtitle2'>
-                          Εκπαιδευτικός <br />
-                          <span className={classes.specialText}>
-                            Grigoris Panagiotopoulos
-                          </span>
-                        </Typography> */}
                         <Hidden smDown>
                           <Typography gutterBottom variant='subtitle2'>
                             {dClass.description}
@@ -187,10 +181,14 @@ export default function InfoClassSt() {
                         Προτεινόμενα Κουίζ
                       </Typography>
                       <Divider />
-                      {suggest.map((quiz) => (
+                      {suggest.map((quiz, i) => (
                         <>
                           <ListItem key={quiz.quiz_id}>
-                            <Typography gutterBottom variant='subtitle2'>
+                            <Typography
+                              key={i}
+                              gutterBottom
+                              variant='subtitle2'
+                            >
                               {quiz.quiz_p.title} - ID: {quiz.quiz_id}
                             </Typography>
                           </ListItem>
@@ -230,8 +228,8 @@ export default function InfoClassSt() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {usersTable.map((user) => (
-                            <TableRow key={user.user.username}>
+                          {usersTable.map((user, i) => (
+                            <TableRow key={i}>
                               <TableCell component='th' scope='row'>
                                 {user.user}
                               </TableCell>

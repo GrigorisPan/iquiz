@@ -83,7 +83,7 @@ export default createMuiTheme({
     body1: {
       fontSize: '1.25em',
       color: iOrange,
-      fontWeight: 300,
+      fontWeight: 350,
     },
     body2: {
       fontSize: '1rem',

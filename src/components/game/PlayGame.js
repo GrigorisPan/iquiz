@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
   optionButton: {
     ...theme.typography.mainButton,
-    fontSize: '1.4rem',
+    fontSize: '1.5rem',
+    padding: '1em 0em',
     marginBottom: '1rem',
     borderRadius: '0.3rem',
     width: '100%',
@@ -62,6 +63,7 @@ export default function PlayGame() {
   const dispatch = useDispatch();
 
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const game = useSelector((state) => state.game);
   const { questions, currentQuestionIndex } = game;
@@ -102,13 +104,11 @@ export default function PlayGame() {
     for (const [i, opt] of Object.entries(questionsCopy)) {
       options.push(opt[0]);
     }
-    //console.log(questionsCopy);
-    // console.log(options);
+
     setOptions(options);
   };
 
   const handleAnswerClick = (option) => {
-    //console.log(option === correct_answer, option, correct_answer);
     dispatch(answerQuestion(option));
     setTimeLeft(quiz.time);
   };
@@ -153,7 +153,7 @@ export default function PlayGame() {
             Question: {currentQuestionIndex + 1} / {total_lenght}
           </Typography>
         </Grid>
-        <Typography variant='h3' style={{ fontSize: '1.60rem', color: '#fff' }}>
+        <Typography variant={matchesMD ? 'h4' : 'h3'} style={{ color: '#fff' }}>
           {question}
         </Typography>
       </Grid>
@@ -187,7 +187,14 @@ export default function PlayGame() {
           ))}
         </Grid>
       </Grid>
-      <Grid item container justify={matchesXS ? 'center' : 'space-between'}>
+      <Grid
+        item
+        container
+        justify={matchesMD ? 'center' : 'space-around'}
+        sm={12}
+        md={10}
+        lg={12}
+      >
         {canReport && (
           <Button
             variant='contained'

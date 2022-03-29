@@ -34,6 +34,8 @@ import {
   authRegisterReducer,
   authCheckReducer,
   authRefreshReducer,
+  authForgotReducer,
+  authResetReducer,
 } from './reducers/authReducers';
 import {
   userDeletedReducer,
@@ -59,10 +61,18 @@ import {
   gameSaveScoreReducer,
   gameUpdateScoreReducer,
 } from './reducers/gameReducers';
+import {
+  liveGameClientReducer,
+  liveGameClientStateReducer,
+  liveGameReducer,
+  liveGameStateReducer,
+} from './reducers/liveGameReducers';
 
 const reducer = combineReducers({
   authLogin: authLoginReducer,
   authRegister: authRegisterReducer,
+  authForgot: authForgotReducer,
+  authReset: authResetReducer,
   authCheck: authCheckReducer,
   authRefresh: authRefreshReducer,
   statisticsDashboard: statisticsDashboardReducer,
@@ -102,6 +112,10 @@ const reducer = combineReducers({
   gameSaveScore: gameSaveScoreReducer,
   gameUpdateScore: gameUpdateScoreReducer,
   gameReport: gameReportReducer,
+  liveGameState: liveGameStateReducer,
+  liveGame: liveGameReducer,
+  liveGameClientState: liveGameClientStateReducer,
+  liveGameClient: liveGameClientReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

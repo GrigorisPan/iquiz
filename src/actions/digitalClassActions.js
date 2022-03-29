@@ -42,7 +42,10 @@ export const getDigitalClassListAll = () => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/digitalclass`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -75,7 +78,10 @@ export const getDigitalClassList = () => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/digitalclass/user`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/user`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -108,7 +114,10 @@ export const getDigitalClass = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.get(`/api/v1/digitalclass/${id}`, config);
+    const res = await axios.get(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/${id}`,
+      config
+    );
 
     const data = res.data.data[0];
     dispatch({
@@ -146,7 +155,11 @@ export const digitalClassUpdate = (id, body) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.put(`/api/v1/digitalclass/${id}`, body, config);
+    const res = await axios.put(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/${id}`,
+      body,
+      config
+    );
 
     const data = res.data.data;
 
@@ -169,7 +182,7 @@ export const digitalClassUpdateClean = () => (dispatch) => {
   dispatch({ type: DIGITALCLASS_UPDATE_RESET });
 };
 
-//Delete Digital Classes For Admin
+//Delete Digital Classes For Admin & Teacher
 export const deleteDigitalClass = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: DIGITALCLASS_DELETE_REQUEST });
@@ -184,7 +197,10 @@ export const deleteDigitalClass = (id) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.delete(`/api/v1/digitalclass/${id}`, config);
+    const res = await axios.delete(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/${id}`,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -220,8 +236,11 @@ export const digitalClassNew = (body) => async (dispatch, getState) => {
       },
     };
 
-    console.log(body, config);
-    const res = await axios.post('/api/v1/digitalclass/create/', body, config);
+    const res = await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/create/`,
+      body,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
@@ -258,7 +277,11 @@ export const digitalClassReqEnroll = (body) => async (dispatch, getState) => {
       },
     };
 
-    const res = await axios.post('/api/v1/digitalclass/enroll/', body, config);
+    const res = await axios.post(
+      `${process.env.REACT_APP_URL_API}/api/v1/digitalclass/enroll/`,
+      body,
+      config
+    );
 
     const data = res.data.data;
     dispatch({
