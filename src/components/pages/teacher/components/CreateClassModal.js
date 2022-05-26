@@ -91,7 +91,8 @@ export default function CreateClassModal({
               marginTop: '0.5em',
             }}
           >
-            Δημιουργία <span className={classes.specialText}>Ψηφιακή Τάξη</span>
+            Δημιουργία{' '}
+            <span className={classes.specialText}>Ψηφιακής Τάξης</span>
           </Typography>
           <Grid
             item

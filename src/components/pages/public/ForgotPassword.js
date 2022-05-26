@@ -126,7 +126,7 @@ export default function ForgotPassword() {
                     variant={matchesXS ? 'h3' : 'h2'}
                     style={{ lineHeight: 1 }}
                   >
-                    Επαναφορα Κωδικού
+                    Επαναφορά Κωδικού
                   </Typography>
                   <Typography
                     variant='body1'
@@ -146,6 +146,7 @@ export default function ForgotPassword() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       autoComplete='false'
+                      required
                       style={{ marginTop: '1.2em' }}
                       fullWidth
                     />

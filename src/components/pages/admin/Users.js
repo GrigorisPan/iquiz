@@ -143,6 +143,9 @@ export default function Users() {
       /* dispatch(userDetailsClean()); */
       dispatch(getUsersList());
     }
+    /*  return () => {
+      dispatch(userDetailsClean());
+    }; */
   }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
@@ -168,6 +171,7 @@ export default function Users() {
   //Delete function
   const deleteHandler = (id) => {
     dispatch(userDelete(id));
+    setShowMore(false);
     setShow(true);
     setOpen(false);
     setTimeout(() => {
@@ -239,80 +243,6 @@ export default function Users() {
               editBtn={true}
               deleteBtn={true}
             />
-            {/*  <TableContainer sx={{ maxHeight: 440 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      return (
-                        <TableRow
-                          hover
-                          role='checkbox'
-                          tabIndex={-1}
-                          key={row.id}
-                        >
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {value === 'more' ? (
-                                  <div className={classes.containerButtons}>
-                                    <Button
-                                      className={classes.editButton}
-                                      component={Link}
-                                      to={`/admin/users/edit/${row.id}`}
-                                    >
-                                      <Icon>
-                                        <span className='material-icons'>
-                                          edit
-                                        </span>
-                                      </Icon>
-                                    </Button>
-                                    <Button
-                                      className={classes.deleteButton}
-                                      id={row.id}
-                                      onClick={() => {
-                                        setDeleteId(row.id);
-                                        handleClickOpen();
-                                        console.log(row.id);
-                                      }}
-                                    >
-                                      <Icon>
-                                        <span className='material-icons'>
-                                          delete
-                                        </span>
-                                      </Icon>
-                                    </Button>
-                                  </div>
-                                ) : column.format &&
-                                  typeof value === 'number' ? (
-                                  column.format(value)
-                                ) : (
-                                  value
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer> */}
           </>
         )}
         <TablePagination
@@ -337,7 +267,7 @@ export default function Users() {
           align='center'
           className={classes.mainText}
         >
-          Δες τους χρήστες που είναι εγγεγραμένοι σε ψηφιακές τάξεις
+          Δες τους χρήστες που είναι εγγεγραμμένοι σε ψηφιακές τάξεις
         </Typography>
         <Grid item align='center' style={{ marginTop: '0.8em' }}>
           <Button

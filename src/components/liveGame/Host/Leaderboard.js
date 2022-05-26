@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CardMedia from '@material-ui/core/CardMedia';
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
+
 import { io } from 'socket.io-client';
 
 import logo from '../../../assets/logo.svg';
@@ -256,7 +257,7 @@ export default function Leaderboard() {
                               variant='subtitle1'
                               className={classes.dataText}
                             >
-                              {player.name}
+                              {i + 1}: {player.name}
                             </Typography>
                           </Grid>
                         </CardContent>

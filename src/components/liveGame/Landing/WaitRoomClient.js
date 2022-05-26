@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -69,7 +69,6 @@ let socket;
 
 export default function WaitRoomClient() {
   const classes = useStyles();
-  const theme = useTheme();
   let history = useHistory();
   const dispatch = useDispatch();
 

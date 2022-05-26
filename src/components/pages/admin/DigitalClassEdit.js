@@ -62,40 +62,39 @@ export default function DigitalClassEdit() {
   const digitalClass = useSelector((state) => state.digitalClass);
   const { loading, error, dClass } = digitalClass;
 
-  const authLogin = useSelector((state) => state.authLogin);
-  const { userInfo } = authLogin;
-
   const digitalClassUpdated = useSelector((state) => state.digitalClassUpdated);
   const { loading: load, error: err, success } = digitalClassUpdated;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    return () => {
+      dispatch(digitalClassClean());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!error) {
-      if (!userInfo) {
-        history.push('/login', { from: '/admin/digitalclasses/edit/:id' });
+      if (!dClass.id || dClass.id !== +id) {
+        dispatch(getDigitalClass(id));
       } else {
-        if (!dClass.id || dClass.id !== +id) {
-          dispatch(getDigitalClass(id));
-        } else {
-          setTitle(dClass.title);
-          setDescription(dClass.description);
-        }
+        setTitle(dClass.title);
+        setDescription(dClass.description);
       }
     } else {
       dispatch(getDigitalClass(id));
       if (error) {
         setTimeout(() => {
           history.push('/admin/digitalclass/');
-          dispatch(digitalClassClean());
-        }, 1500);
+          /* dispatch(digitalClassClean()); */
+        }, 1000);
       }
     }
     return () => {
       dispatch(digitalClassUpdateClean());
       setShow(false);
     };
-  }, [dispatch, history, userInfo, dClass, error, id]);
+  }, [dispatch, history, dClass, error, id]);
 
   const updateHandler = (e) => {
     e.preventDefault();
@@ -103,7 +102,7 @@ export default function DigitalClassEdit() {
     setShow(true);
     setTimeout(() => {
       setShow(false);
-    }, 1500);
+    }, 1300);
   };
 
   const backHandler = () => {
@@ -226,7 +225,6 @@ export default function DigitalClassEdit() {
                     id='submit'
                     type='submit'
                     className={classes.loginButton}
-                    //onClick={createHandler}
                   >
                     Δημοσίευση
                   </Button>

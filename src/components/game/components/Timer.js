@@ -1,20 +1,36 @@
 import React, { useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
-export default function Timer({ timeLeft, setTimeLeft }) {
+let interval;
+
+export default function Timer({ timeLeft, setTimeLeft, page = '' }) {
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
+    if (page === 'fillerSlideTimer') {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 2);
+      }, 1000);
+    } else {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    }
 
     return () => {
       clearInterval(interval);
-      console.log('clean');
     };
-  }, [setTimeLeft]);
+  }, [setTimeLeft, page]);
   return (
-    <Typography variant='subtitle1' style={{ color: '#ee6600' }}>
-      Time: {timeLeft}
-    </Typography>
+    <>
+      {page === 'fillerSlideTimer' ? (
+        <div>
+          <LinearProgress variant='determinate' value={timeLeft} />
+        </div>
+      ) : (
+        <Typography variant='subtitle1' style={{ color: '#ee6600' }}>
+          Time: {timeLeft}
+        </Typography>
+      )}
+    </>
   );
 }

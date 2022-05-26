@@ -102,7 +102,7 @@ const InputLabel = withStyles({
   root: {
     color: '#fff',
     fontWeight: '400',
-    fontSize: '1.2em',
+    fontSize: '1.1em',
   },
 })(MuiInputLabel);
 
@@ -171,7 +171,7 @@ export default function SettingsCard({
           <Grid item>
             <FormControl className={classes.formControl}>
               <InputLabel id='type-user-select-label' required={true}>
-                Επιτρεπτά Λάθη
+                Επιτρεπόμενα λάθη
               </InputLabel>
               <Select
                 labelId='user-role-select-label'
@@ -197,7 +197,8 @@ export default function SettingsCard({
       </Grid>
       <Grid
         item
-        container='column'
+        container
+        direction='row'
         justify='center'
         style={{ margin: '0.5em ' }}
       >

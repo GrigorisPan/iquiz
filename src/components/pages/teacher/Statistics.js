@@ -42,15 +42,14 @@ export default function Statistics() {
   }, [dispatch]);
 
   //Delete function
-  const deleteHandler = (user_id, quiz_id) => {
-    const ids = `${user_id}-${quiz_id}`;
-    dispatch(reportDelete(ids));
+  const deleteHandler = (id) => {
+    dispatch(reportDelete(id));
     setShow(true);
-    dispatch(getStatistics());
     setTimeout(() => {
+      dispatch(getStatistics());
       setShow(false);
       dispatch(reportDeleteClean());
-    }, 1500);
+    }, 1000);
   };
 
   return (

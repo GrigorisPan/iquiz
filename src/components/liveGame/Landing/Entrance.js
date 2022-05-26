@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Grid, Button } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Stars from '../../ui/Stars';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Entrance() {
   const classes = useStyles();
-  const theme = useTheme();
   let history = useHistory();
   const dispatch = useDispatch();
 

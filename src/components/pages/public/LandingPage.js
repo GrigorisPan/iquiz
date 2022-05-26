@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import eduIcon from '../../../assets/eduIcon.jpg';
 import Typography from '@material-ui/core/Typography';
@@ -87,11 +87,11 @@ export default function LandingPage() {
             Η πλατφόρμα απευθύνεται σε μαθητές και εκπαιδευτικούς όλων των
             εκπαιδευτικών βαθμίδων προσφέροντας ευελιξία και προσαρμοστικότητα.
           </Typography>
-          <Grid item align='center' style={{ marginTop: '2em' }}>
+          {/* <Grid item align='center' style={{ marginTop: '2em' }}>
             <Button className={classes.moreButton} variant='contained'>
               Μάθε περισότερα
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
       <Grid item container md={6} className={classes.iconContainer}></Grid>

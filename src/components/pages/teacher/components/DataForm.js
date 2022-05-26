@@ -172,6 +172,7 @@ export default function DataForm({
                 autoComplete='false'
                 fullWidth
                 value={repeat}
+                helperText='Για άπειρες επαναλήψεις εισάγετε - 0 - '
                 onChange={(e) => setRepeat(e.target.value)}
               />
             </Grid>
@@ -200,7 +201,7 @@ export default function DataForm({
                 rows={4}
                 fullWidth
                 variant='filled'
-                required={true}
+                required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

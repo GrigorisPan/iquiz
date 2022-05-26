@@ -42,7 +42,7 @@ export default function StatisticsDashboard({ count }) {
         className={classes.card}
         sx={{ maxWidth: 345 }}
       >
-        <CardActionArea onClick={() => console.log('hi')}>
+        <CardActionArea>
           <CardMedia className={classes.cardMedia}>
             {' '}
             <Icon style={{ fontSize: '48px' }}>

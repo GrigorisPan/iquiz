@@ -33,7 +33,7 @@ export default function DigitalClassSubFormSt() {
 
   const dispatch = useDispatch();
   const [dclassId, setDclassId] = useState('');
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState(false);
 
   const digitalClassEnroll = useSelector((state) => state.digitalClassEnroll);
   const { loading, error, success } = digitalClassEnroll;
@@ -41,7 +41,7 @@ export default function DigitalClassSubFormSt() {
   useEffect(() => {
     return () => {
       setDclassId('');
-      setShow('');
+      setShow(false);
     };
   }, [setDclassId, setShow]);
 
@@ -51,8 +51,8 @@ export default function DigitalClassSubFormSt() {
     setShow(true);
     setDclassId('');
     setTimeout(() => {
-      setShow('');
-    }, 2000);
+      setShow(false);
+    }, 1500);
   };
 
   return (

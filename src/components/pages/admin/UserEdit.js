@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 export default function UserEdit() {
   const classes = useStyles();
   let history = useHistory();
-  const isMountedRef = useRef('false');
   let { id } = useParams();
 
   const [type, setType] = useState('');
@@ -33,13 +32,10 @@ export default function UserEdit() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [show, setShow] = useState('null');
+  const [show, setShow] = useState('false');
 
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
-
-  const authLogin = useSelector((state) => state.authLogin);
-  const { userInfo } = authLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const success = userUpdateProfile.success;
@@ -48,51 +44,55 @@ export default function UserEdit() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    isMountedRef.current = true;
+    return () => {
+      dispatch(userDetailsClean());
+    };
+  }, [dispatch]);
 
-    if (!userInfo) {
-      history.push('/login', { from: '/admin/users/edit/:id' });
-    } else {
+  useEffect(() => {
+    if (!error) {
       if (!user.id || user.id !== +id) {
         dispatch(getUserDetails(id));
-        //console.log(user);
       } else {
         setUsername(user.username);
         setEmail(user.email);
         setType(user.type);
       }
+    } else {
+      dispatch(getUserDetails(id));
+      if (error) {
+        setShow(true);
+        setTimeout(() => {
+          history.push('/login', { from: '/admin/users/edit/:id' });
+          /* dispatch(userDetailsClean()); */
+        }, 1000);
+      }
     }
 
     return () => {
-      setTimeout(() => {
-        isMountedRef.current = false;
-        if (!isMountedRef.current) {
-          dispatch(updateUserClean());
-        }
-      }, 1500);
+      dispatch(updateUserClean());
+      setShow(false);
     };
-  }, [dispatch, history, id, userInfo, user, isMountedRef]);
+  }, [dispatch, history, user, error, id]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage('Λάθος κωδικοί.');
+      setMessage('Οι κωδικοί δεν ταιριάζουν.');
       setShow(true);
       setTimeout(() => {
         setShow(false);
         setMessage('');
-        isMountedRef.current = true;
       }, 1300);
     } else {
       dispatch(updateUserProfile(user.id, { username, email, type, password }));
       setShow(true);
       setTimeout(() => {
         setShow(false);
-        isMountedRef.current = true;
-      }, 1500);
+        dispatch(updateUserClean());
+      }, 1300);
     }
-
-    dispatch(userDetailsClean());
+    /* dispatch(userDetailsClean()); */
   };
   return (
     <Grid
@@ -103,12 +103,7 @@ export default function UserEdit() {
     >
       {show && message && (
         <Grid item container justify='center' style={{ marginBottom: '1em' }}>
-          <Message severity='info'>{message}</Message>
-        </Grid>
-      )}
-      {show && error && (
-        <Grid item container justify='center' style={{ marginBottom: '1em' }}>
-          <Message severity='error'>{error}</Message>
+          <Message severity='warning'>{message}</Message>
         </Grid>
       )}
       {show && err && (
@@ -121,23 +116,28 @@ export default function UserEdit() {
           <Message severity='success'>Επιτυχή ενημέρωση</Message>
         </Grid>
       )}
-
-      <MainForm
-        loading={loading}
-        text={'Επεξεργασία χρήστη'}
-        title={`ID: ${id}`}
-        submitHandler={submitHandler}
-        selection={true}
-        setUsername={setUsername}
-        setEmail={setEmail}
-        setPassword={setPassword}
-        setConfirmPassword={setConfirmPassword}
-        username={username}
-        email={email}
-        type={type}
-        setType={setType}
-        isAdmin={true}
-      />
+      {show && error ? (
+        <Grid item container justify='center' style={{ marginBottom: '1em' }}>
+          <Message severity='error'>{error}</Message>
+        </Grid>
+      ) : (
+        <MainForm
+          loading={loading}
+          text={'Επεξεργασία χρήστη'}
+          title={`ID: ${id}`}
+          submitHandler={submitHandler}
+          selection={true}
+          setUsername={setUsername}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          setConfirmPassword={setConfirmPassword}
+          username={username}
+          email={email}
+          type={type}
+          setType={setType}
+          isAdmin={true}
+        />
+      )}
     </Grid>
   );
 }

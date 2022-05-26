@@ -59,7 +59,7 @@ export default function Login({ history, location }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ export default function Login({ history, location }) {
     if (error) {
       setShow('true');
       setTimeout(() => {
-        setShow('false');
+        setShow(false);
         dispatch(loginClean());
       }, 1500);
     }
@@ -212,65 +212,3 @@ export default function Login({ history, location }) {
     </React.Fragment>
   );
 }
-
-/* <Grid item>
-        <Grid
-          item
-          container
-          direction='column'
-          justify='center'
-          alignItems='center'
-          sm
-        >
-          <Grid item>
-            <Typography variant='h2' style={{ lineHeight: 1 }} align='center'>
-              Είσοδος
-            </Typography>
-            <Typography
-              variant='body1'
-              align='center'
-              style={{ marginTop: '1em' }}
-            >
-              Μάθε τα πάντα παίζοντας!
-            </Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              label='Ηλεκτρονικό ταχυδρομείο'
-              id='email'
-              style={{ marginTop: '1.3em' }}
-              fullWidth
-              autoComplete='false'
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label='Κωδικός'
-              id='password'
-              style={{ marginTop: '1.3em' }}
-              fullWidth
-              type='password'
-              autoComplete='false'
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid
-        item
-        container
-        direction='column'
-        justify='center'
-        alignItems='center'
-      >
-        <Grid item>
-          <Typography variant='h2' style={{ lineHeight: 1 }} align='center'>
-            Είσοδος
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button variant='contained' className={classes.signButton}>
-            Sign Up
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid> */

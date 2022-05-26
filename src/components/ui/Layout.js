@@ -154,8 +154,6 @@ export default function Layout({ children, role }) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [value, setValue] = useState(0);
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   const authCheck = useSelector((state) => state.authCheck);
   const { userInfoCheck, error } = authCheck;
   const authLogin = useSelector((state) => state.authLogin);
@@ -216,7 +214,7 @@ export default function Layout({ children, role }) {
             </IconButton>
             <Button
               component={Link}
-              to={role === `/${role}`}
+              to={role === `/${role}` ? `/${role}` : ''}
               onClick={() => setValue(0)}
               disableRipple
               className={

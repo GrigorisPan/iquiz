@@ -45,7 +45,7 @@ export default function DigitalClass() {
   let indexOfFirst = 1;
   let currentdClasses = [];
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1);
+  const [itemsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

@@ -156,7 +156,7 @@ export default function StatisticsCard(props) {
               reports.map((report) => (
                 <Grid
                   item
-                  key={report.user_id - report.quiz_id}
+                  key={report.id}
                   container
                   direction='row'
                   justify='center'
@@ -167,7 +167,7 @@ export default function StatisticsCard(props) {
                       variant='body2'
                       style={{ paddingRight: '1em' }}
                     >
-                      Ερώτησης:{' '}
+                      Ερώτηση:{' '}
                       <span className={classes.specialText}>
                         {report.question}
                       </span>
@@ -189,7 +189,7 @@ export default function StatisticsCard(props) {
                     variant='outlined'
                     className={classes.deleteButton}
                     onClick={() => {
-                      props.deleteHandler(report.user_id, report.quiz_id);
+                      props.deleteHandler(report.id);
                     }}
                   >
                     <Icon>

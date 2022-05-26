@@ -10,7 +10,6 @@ export default function Copyright() {
         iQuiz
       </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
     </Typography>
   );
 }

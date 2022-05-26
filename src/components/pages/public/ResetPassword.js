@@ -84,6 +84,7 @@ export default function ResetPassword() {
       setShow(true);
       setTimeout(() => setShow(false), 2000);
     } else {
+      setMessage('');
       dispatch(resetPassword(password, resettoken));
     }
   };
@@ -123,7 +124,7 @@ export default function ResetPassword() {
             style={{ lineHeight: 1 }}
             align='center'
           >
-            Επαναφορα Κωδικού
+            Επαναφορά Κωδικού
           </Typography>
           <Typography
             variant='body1'
@@ -138,7 +139,7 @@ export default function ResetPassword() {
             <form onSubmit={submitHandler}>
               <Grid item>
                 <TextField
-                  label='Κωδικός'
+                  label='Νέος κωδικός'
                   id='password'
                   required={true}
                   onChange={(e) => setPassword(e.target.value)}
@@ -150,7 +151,7 @@ export default function ResetPassword() {
               </Grid>
               <Grid item>
                 <TextField
-                  label='Επιβεβαίωση κωδικού'
+                  label='Επιβεβαίωση νέου κωδικού'
                   id='Confirm Password'
                   required={true}
                   onChange={(e) => setConfirmPassword(e.target.value)}

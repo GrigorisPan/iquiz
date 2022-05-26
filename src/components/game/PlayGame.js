@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useParams } from 'react-router-dom';
 import { Grid, makeStyles, useTheme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -9,6 +9,7 @@ import {
   answerQuestion,
   finnishGame,
   nextQuestion,
+  checkCanReport,
 } from '../../actions/gameActions';
 import Timer from '../game/components/Timer';
 import Message from '../ui/Message';
@@ -22,12 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },
   optionButton: {
     ...theme.typography.mainButton,
+    display: 'inline-block',
+    width: 'auto',
+    height: 'auto',
     fontSize: '1.5rem',
-    padding: '1em 0em',
+    padding: '0.3em 0.3em',
     marginBottom: '1rem',
     borderRadius: '0.3rem',
-    width: '100%',
-    height: '40px',
+    /*  width: '100%', */
+    /*  minHeight: '100%', */
     alignItems: 'center',
     color: '#8854c0',
     '&:hover': {
@@ -36,7 +40,11 @@ const useStyles = makeStyles((theme) => ({
       transition: 'transform 150ms',
       backgroundColor: '#d6c5ea',
     },
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1.25rem',
+    },
   },
+
   endButton: {
     ...theme.typography.mainButton,
     backgroundColor: '#ff8181',
@@ -61,8 +69,9 @@ export default function PlayGame() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
+  let { id } = useParams();
 
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+  /* const matchesXS = useMediaQuery(theme.breakpoints.down('xs')); */
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const game = useSelector((state) => state.game);
@@ -93,6 +102,7 @@ export default function PlayGame() {
 
   if (timeLeft < 0) {
     setTimeLeft((prev) => (prev = quiz.time));
+    dispatch(checkCanReport(id));
     dispatch(nextQuestion());
   }
   const getOptions = (question, setOptions) => {
@@ -109,6 +119,7 @@ export default function PlayGame() {
   };
 
   const handleAnswerClick = (option) => {
+    dispatch(checkCanReport(id));
     dispatch(answerQuestion(option));
     setTimeLeft(quiz.time);
   };
@@ -122,7 +133,7 @@ export default function PlayGame() {
     setTimeout(() => {
       setTimeout(() => {
         dispatch(reportCreateClean());
-      }, 1500);
+      }, 1000);
     });
   };
 
@@ -154,15 +165,20 @@ export default function PlayGame() {
           </Typography>
         </Grid>
         <Typography variant={matchesMD ? 'h4' : 'h3'} style={{ color: '#fff' }}>
-          {question}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: `${question}`,
+              /* __html: `Ερώτηση<br><img src="http://arch.ece.uowm.gr///iexams/images/ascii-tableHEX.gif"/>`, */
+            }}
+          ></div>
         </Typography>
       </Grid>
       <Grid
         item
         container
         xs={12}
-        sm={8}
-        md={6}
+        sm={10}
+        md={8}
         justify='center'
         style={{ color: '#ee6600', margin: '1em 0em' }}
       >
@@ -182,7 +198,7 @@ export default function PlayGame() {
                 handleAnswerClick(option);
               }}
             >
-              {option}
+              <div>{option}</div>
             </Button>
           ))}
         </Grid>

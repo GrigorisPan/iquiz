@@ -16,6 +16,7 @@ import Loader from '../../ui/Loader';
 import Message from '../../ui/Message';
 
 const columns = [
+  { id: 'id', label: 'Id', minWidth: 20, align: 'center' },
   { id: 'user_id', label: 'User Id', minWidth: 20, align: 'center' },
   { id: 'username', label: 'Username', minWidth: 100, align: 'left' },
   {
@@ -120,9 +121,9 @@ export default function Quizzes() {
   reports.forEach((report) => {
     const createdAt = displayDate(report.createdAt);
     const updatedAt = displayDate(report.updatedAt);
-    const id = `${report.user_id}-${report.quiz_id}`;
+
     let row = createData(
-      id,
+      report.id,
       report.user_id,
       report.users_p.username,
       report.quiz_id,
@@ -136,8 +137,8 @@ export default function Quizzes() {
   });
 
   //Delete function
-  const deleteHandler = (ids) => {
-    dispatch(reportDelete(ids));
+  const deleteHandler = (id) => {
+    dispatch(reportDelete(id));
     setShow(true);
     setOpen(false);
     setTimeout(() => {

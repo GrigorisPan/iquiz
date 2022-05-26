@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Copyright from './Copyright';
 
 import { makeStyles } from '@material-ui/core/styles';

@@ -21,9 +21,6 @@ import Message from '../../ui/Message';
 import Loader from '../../ui/Loader';
 
 const useStyles = makeStyles((theme) => ({
-  specialText: {
-    color: theme.palette.common.orange,
-  },
   continuousButton: {
     ...theme.typography.mainButton,
     backgroundColor: '#4caf50',
@@ -98,7 +95,7 @@ export default function RulesModal({ open, setOpen, handleClose }) {
                   variant='body2'
                   className={classes.textRules}
                 >
-                  1. Σε περίπτωση αλλαγής σελίδα το παιχνίδι{' '}
+                  1. Σε περίπτωση αλλαγής σελίδας το παιχνίδι{' '}
                   <span className={classes.specialText}>τερματίζεται </span>{' '}
                   αυτόματα.
                 </Typography>

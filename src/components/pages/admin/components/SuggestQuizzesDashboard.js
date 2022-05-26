@@ -37,12 +37,12 @@ export default function SuggestQuizzesDashboard({ count }) {
     <Grid item align='center'>
       <Card
         onClick={() => {
-          history.push('/admin/reports', { from: '/admin' });
+          history.push('/admin/suggestquizzes', { from: '/admin' });
         }}
         className={classes.card}
         sx={{ maxWidth: 345 }}
       >
-        <CardActionArea onClick={() => console.log('hi')}>
+        <CardActionArea>
           <CardMedia className={classes.cardMedia}>
             {' '}
             <Icon style={{ fontSize: '48px' }}>

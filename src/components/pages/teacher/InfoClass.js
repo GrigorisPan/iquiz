@@ -264,15 +264,15 @@ export default function InfoClass() {
                         Προτεινόμενα Κουίζ
                       </Typography>
                       <Divider />
-                      {suggest.map((quiz) => (
-                        <>
-                          <ListItem key={quiz.quiz_id}>
+                      {suggest.map((quiz, i) => (
+                        <React.Fragment key={quiz.quiz_id + i}>
+                          <ListItem>
                             <Typography gutterBottom variant='subtitle2'>
-                              {quiz.quiz_p.title} - ID: {quiz.quiz_id}
+                              {quiz.quiz_p.title} {/* - Code: {quiz.quiz_id} */}
                             </Typography>
                           </ListItem>
                           <Divider />
-                        </>
+                        </React.Fragment>
                       ))}
                     </List>
                   </Grid>
@@ -307,12 +307,14 @@ export default function InfoClass() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {usersTable.map((user) => (
-                            <TableRow key={user.user.username}>
+                          {usersTable.map((user, i) => (
+                            <TableRow key={i}>
                               <TableCell component='th' scope='row'>
                                 {user.user}
                               </TableCell>
-                              <TableCell align='right'>{user.score}</TableCell>
+                              <TableCell align='right'>
+                                {user.score.toFixed(0)}
+                              </TableCell>
                               <TableCell align='right'>
                                 {user.play_count}
                               </TableCell>

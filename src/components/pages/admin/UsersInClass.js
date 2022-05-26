@@ -8,6 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import {
   deleteUserInClass,
   deleteUserInClassClean,
+  getAllUsersInClass,
 } from '../../../actions/statisticsAction';
 import TableShow from './components/TableShow';
 import DeleteModal from '../teacher/components/DeleteModal';
@@ -97,6 +98,9 @@ export default function UserInClass() {
     if (!userInfo) {
       history.push('/login', { from: '/admin/users' });
     }
+    if (successDelete) {
+      dispatch(getAllUsersInClass());
+    }
   }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];
@@ -126,7 +130,7 @@ export default function UserInClass() {
     setTimeout(() => {
       setShow(false);
       dispatch(deleteUserInClassClean());
-    }, 1500);
+    }, 1300);
   };
 
   const handleClickOpen = (id) => {
@@ -152,7 +156,7 @@ export default function UserInClass() {
   return (
     <>
       <Typography gutterBottom variant='h3'>
-        Πίνακας Εγγεγραμένων Χρηστών σε Ψηφιακές Τάξεις
+        Πίνακας Εγγεγραμμένων Χρηστών σε Ψηφιακές Τάξεις
       </Typography>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Grid container style={{ paddingBottom: '2em' }}>

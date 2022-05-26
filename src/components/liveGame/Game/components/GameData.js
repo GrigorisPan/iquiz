@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
+const optionsLetters = ['A', 'B', 'C', 'D', 'E'];
 const colorArray = ['#2f6dae', '#2c9ca6', '#eca82c', '#ba2f47', '#66994D'];
 
 export default function GameData({
@@ -157,7 +157,7 @@ export default function GameData({
                 style={{ backgroundColor: `${colorArray[i]}` }}
               >
                 <CardContent className={classes.optionCardContent}>
-                  {option}
+                  {optionsLetters[i]}: {option}
                 </CardContent>
               </Card>
             ))}

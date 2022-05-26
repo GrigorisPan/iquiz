@@ -78,23 +78,25 @@ export default function TimerLiveGame({
     time.current = timeLeft;
   }
   const timeOver = () => {
+    //clearInterval(intervalRef.current);
     dispatch(timeUp(socket));
-    clearInterval(intervalRef.current);
+    console.log('timeUp');
   };
-
-  if (page === 'game') {
-    if (timeLeft === 0) {
-      clearInterval(intervalRef.current);
-      timeOver();
+  useEffect(() => {
+    if (page === 'game') {
+      if (timeLeft === 0) {
+        clearInterval(intervalRef.current);
+        timeOver();
+      }
     }
-  }
-
-  if (page === 'lobby') {
-    if (timeLeft === 0) {
-      clearInterval(intervalRef.current);
-      timeEnd();
+    if (page === 'lobby') {
+      if (timeLeft === 0) {
+        clearInterval(intervalRef.current);
+        timeEnd();
+        console.log('timeOver');
+      }
     }
-  }
+  }, [timeLeft]);
 
   return (
     <>

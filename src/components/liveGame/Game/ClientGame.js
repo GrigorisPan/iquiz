@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Grid, makeStyles, useTheme } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Typography from '@material-ui/core/Typography';
 
 import { io } from 'socket.io-client';
@@ -39,12 +38,8 @@ const useStyles = makeStyles((theme) => ({
 let socket;
 export default function ClientGame() {
   const classes = useStyles();
-  const theme = useTheme();
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
-  const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const liveGameClient = useSelector((state) => state.liveGameClient);
   const {
@@ -97,7 +92,7 @@ export default function ClientGame() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Grid container justify='center' alignItems='top'>
+        <Grid container justify='center' alignItems='flex-start'>
           <Message severity='error'>{error}</Message>
         </Grid>
       ) : (
@@ -113,14 +108,14 @@ export default function ClientGame() {
                     variant='h3'
                     style={{ color: '#fff', textAlign: 'center' }}
                   >
-                    Καταγράφηκε η απάντηση
+                    Καταγράφηκε η απάντηση. Αναμονή για την επόμενη ερώτηση.
                   </Typography>
                 </Grid>
 
                 {!feedback ? (
                   <Loader />
                 ) : (
-                  <Grid container justify='center' sm={6}>
+                  <Grid item container justify='center' sm={6}>
                     <Message severity={correct ? 'success' : 'error'}>
                       {correct ? 'Σωστή απάντηση' : 'Λάθος απάντηση'}
                     </Message>

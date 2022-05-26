@@ -189,7 +189,7 @@ export default function EndGame() {
                               variant='subtitle1'
                               className={classes.dataText}
                             >
-                              {player.name}
+                              {i + 1}: {player.name}
                             </Typography>
                           </Grid>
                         </CardContent>
@@ -233,7 +233,7 @@ export default function EndGame() {
                 className={classes.backButton}
                 onClick={() => dispatch(exitGame())}
               >
-                Έξοδος
+                Έξοδος Κουίζ
               </Button>
             </Grid>
             <Grid item>

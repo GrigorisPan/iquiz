@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Route, useParams, Link } from 'react-router-dom';
 
 import { Grid } from '@material-ui/core';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -139,7 +138,7 @@ export default function HomeSt() {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
-                  image={`http://localhost:5000/uploads/${item.photo}`}
+                  image={`${process.env.REACT_APP_URL_API}/uploads/${item.photo}`}
                   title='Image title'
                 />
                 <CardContent className={classes.cardContent}>
@@ -169,7 +168,7 @@ export default function HomeSt() {
                     component={Link}
                     to={`student/quiz/${item.id}`}
                   >
-                    Περισότερα
+                    Περισσότερα
                     <ButtonArrow
                       width={15}
                       height={15}

@@ -70,7 +70,7 @@ export const liveGameReducer = (
     playersAnswered: null,
     playerData: [],
     leaderboard: [],
-    filerSlide: null,
+    fillerSlide: null,
     chartBars: null,
     error: null,
   },
@@ -99,7 +99,7 @@ export const liveGameReducer = (
         playersAnswered: null,
         playerData: [],
         leaderboard: [],
-        filerSlide: null,
+        fillerSlide: null,
         chartBars: null,
         error: null,
       };

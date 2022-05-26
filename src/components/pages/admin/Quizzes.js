@@ -10,7 +10,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableShow from './components/TableShow';
 import {
   listLibraryQuizzes,
-  listLibraryQuizDetailsClean,
   quizDelete,
   quizDeleteClean,
 } from '../../../actions/quizActions';
@@ -166,9 +165,9 @@ export default function Quizzes() {
       /* dispatch(userDetailsClean()); */
       dispatch(listLibraryQuizzes());
     }
-    return () => {
+    /*  return () => {
       dispatch(listLibraryQuizDetailsClean());
-    };
+    }; */
   }, [dispatch, history, userInfo, successDelete, errorDelete]);
 
   let rows = [];

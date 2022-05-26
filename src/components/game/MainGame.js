@@ -133,7 +133,7 @@ export default function MainGame() {
                   <CardMedia
                     component='img'
                     /* image='https://picsum.photos/300/200' */
-                    image={`http://localhost:5000/uploads/no-photo.png`}
+                    image={`${process.env.REACT_APP_URL_API}/uploads/${quiz.photo}`}
                     className={classes.cardMedia}
                     title='Image title'
                   />

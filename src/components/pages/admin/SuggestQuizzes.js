@@ -116,9 +116,9 @@ export default function SuggestQuizzes() {
     let row = createData(
       id,
       suggest.class_id,
-      suggest.quiz_p.title,
-      suggest.quiz_id,
       suggest.digital_class_p.title,
+      suggest.quiz_id,
+      suggest.quiz_p.title,
       createdAt,
       updatedAt,
       'more'

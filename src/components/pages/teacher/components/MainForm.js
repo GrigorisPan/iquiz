@@ -118,6 +118,7 @@ export default function MainForm({
                 style={{ marginTop: '1.3em' }}
                 autoComplete='false'
                 fullWidth
+                required
                 onChange={(e) => setUsername(e.target.value)}
               />
             </Grid>
@@ -129,6 +130,7 @@ export default function MainForm({
                 onChange={(e) => setEmail(e.target.value)}
                 style={{ marginTop: '1.3em' }}
                 fullWidth
+                required
                 autoComplete='false'
               />
             </Grid>

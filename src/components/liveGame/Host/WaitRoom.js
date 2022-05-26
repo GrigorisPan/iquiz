@@ -3,7 +3,7 @@ import { Grid, Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import Stars from '../../ui/Stars';
@@ -66,6 +66,9 @@ export default function WaitRoom() {
   const liveGame = useSelector((state) => state.liveGame);
   const { loading, error, room, players } = liveGame;
 
+  const quizDetails = useSelector((state) => state.quizDetails);
+  const { quiz } = quizDetails;
+
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -112,7 +115,7 @@ export default function WaitRoom() {
         {loading ? (
           <Loader />
         ) : error ? (
-          <Grid container justify='center' alignItems='top'>
+          <Grid container justify='center' alignItems='flex-start'>
             <Message severity='error'>{error}</Message>
           </Grid>
         ) : (
@@ -140,7 +143,7 @@ export default function WaitRoom() {
                     margin: '0.5em 0.5em',
                   }}
                 >
-                  Εισάγωγη στη πληροφορική
+                  {quiz.title}
                 </Typography>
               </Grid>
               <Grid item>

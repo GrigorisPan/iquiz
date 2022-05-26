@@ -84,6 +84,7 @@ export default function Signup() {
       setShow(true);
       setTimeout(() => setShow(false), 2000);
     } else {
+      setMessage('');
       dispatch(register(username, email, type, password));
     }
   };

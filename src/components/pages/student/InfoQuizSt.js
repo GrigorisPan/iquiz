@@ -63,7 +63,7 @@ export default function InfoQuizSt() {
     if (error) {
       setTimeout(() => {
         history.push('/student', { from: 'InfoQuiz' });
-      }, 2000);
+      }, 1000);
     }
   }, [dispatch, id, history, error]);
 
@@ -87,7 +87,7 @@ export default function InfoQuizSt() {
             <Hidden xsDown>
               <CardMedia
                 className={classes.cardMedia}
-                image={`http://localhost:5000/uploads/${quiz.photo}`}
+                image={`${process.env.REACT_APP_URL_API}/uploads/${quiz.photo}`}
                 title='Image title'
               />
             </Hidden>
@@ -103,7 +103,7 @@ export default function InfoQuizSt() {
                   {quiz.description}
                 </Typography>
                 <Typography variant='body2'>
-                  Συγγραφέας:{' '}
+                  Καθηγητής:{' '}
                   <span className={classes.specialText}>
                     {quiz.users_p.username}
                   </span>
@@ -142,7 +142,11 @@ export default function InfoQuizSt() {
                           >
                             replay
                           </Icon>
-                          {quiz.repeat} φορές
+                          {quiz.repeat === 0 ? (
+                            <span>&infin; φορές</span>
+                          ) : (
+                            <span>{quiz.repeat} φορές</span>
+                          )}
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>
@@ -159,7 +163,7 @@ export default function InfoQuizSt() {
                           >
                             <span>quiz</span>
                           </Icon>
-                          {quiz.time} ερωτήσεις
+                          {quiz.questions_count} ερωτήσεις
                         </ListItemIcon>
                       </ListItem>
                       <ListItem style={{ padding: '0.1em 0em' }}>

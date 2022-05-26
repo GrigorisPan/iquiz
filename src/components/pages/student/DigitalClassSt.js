@@ -49,6 +49,15 @@ export default function DigitalClassSt() {
   const digitalClassList = useSelector((state) => state.digitalClassList);
   const { loading, error, dClasses } = digitalClassList;
 
+  const digitalClassEnroll = useSelector((state) => state.digitalClassEnroll);
+  const { success } = digitalClassEnroll;
+
+  useEffect(() => {
+    if (success) {
+      dispatch(getDigitalClassList());
+    }
+  }, [dispatch, success]);
+
   useEffect(() => {
     dispatch(getDigitalClassList());
     dispatch(digitalClassClean());

@@ -83,7 +83,7 @@ export default function RulesModalLiveGame({
               variant='body2'
               className={classes.textRules}
             >
-              1. Σε περίπτωση αλλαγής σελίδα το παιχνίδι{' '}
+              1. Σε περίπτωση αλλαγής σελίδας το παιχνίδι{' '}
               <span className={classes.specialText}>τερματίζεται </span>{' '}
               αυτόματα.
             </Typography>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, makeStyles, useTheme } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({

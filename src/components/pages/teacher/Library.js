@@ -185,7 +185,7 @@ export default function Library({ match }) {
                     <Card className={classes.card}>
                       <CardMedia
                         className={classes.cardMedia}
-                        image={`http://localhost:5000/uploads/${item.photo}`}
+                        image={`${process.env.REACT_APP_URL_API}/uploads/${item.photo}`}
                         title='Image title'
                       />
                       <CardContent className={classes.cardContent}>

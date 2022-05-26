@@ -11,11 +11,11 @@ import {
   USER_INFO_CHECK_FAIL,
   USER_INFO_CHECK_SUCCESS,
   USER_INFO_CHECK_REQUEST,
-  USER_INFO_CHECK_RESET,
+  /*   USER_INFO_CHECK_RESET, */
   REFRESH_INFO_REQUEST,
   REFRESH_INFO_SUCCESS,
   REFRESH_INFO_FAIL,
-  REFRESH_INFO_RESET,
+  /* REFRESH_INFO_RESET, */
   FORGOT_PASSWORD_RESET,
   FORGOT_PASSWORD_FAIL,
   FORGOT_PASSWORD_SUCCESS,
@@ -25,7 +25,7 @@ import {
   RESET_PASSWORD_FAIL,
   RESET_PASSWORD_RESET,
 } from '../constants/authConstants';
-import {
+/* import {
   USER_UPDATE_PROFILE_RESET,
   USER_DETAILS_RESET,
   USER_LIST_RESET,
@@ -34,7 +34,7 @@ import {
   QUIZ_LIBRARY_LIST_RESET,
   QUIZ_LIST_RESET,
 } from '../constants/quizConstants';
-import { STATISTICS_RESET } from '../constants/statisticsConstants.js';
+import { STATISTICS_RESET } from '../constants/statisticsConstants.js'; */
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -76,7 +76,6 @@ export const loginClean = () => (dispatch) => {
 };
 
 export const logout = () => async (dispatch, getState) => {
-  localStorage.removeItem('userInfo');
   try {
     const {
       authLogin: { userInfo },
@@ -96,15 +95,18 @@ export const logout = () => async (dispatch, getState) => {
     document.cookie =
       'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
-  dispatch({ type: USER_INFO_CHECK_RESET });
+  /*  dispatch({ type: USER_INFO_CHECK_RESET });
   dispatch({ type: REFRESH_INFO_RESET });
   dispatch({ type: USER_UPDATE_PROFILE_RESET });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
   dispatch({ type: STATISTICS_RESET });
   dispatch({ type: QUIZ_LIST_RESET });
-  dispatch({ type: QUIZ_LIBRARY_LIST_RESET });
-  dispatch({ type: LOGOUT });
+  dispatch({ type: QUIZ_LIBRARY_LIST_RESET }); */
+
+  /*   dispatch({ type: LOGOUT }); */
+  window.location.href = '/';
+  localStorage.removeItem('userInfo');
 };
 
 export const register =

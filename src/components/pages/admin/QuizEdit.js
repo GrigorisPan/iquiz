@@ -63,8 +63,11 @@ export default function QuizEdit({ match }) {
   const load = quizUpdate.loading;
   const success = quizUpdate.success;
 
-  const authLogin = useSelector((state) => state.authLogin);
-  const { userInfo } = authLogin;
+  useEffect(() => {
+    return () => {
+      dispatch(listLibraryQuizDetailsClean());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (!error) {
@@ -82,15 +85,15 @@ export default function QuizEdit({ match }) {
       if (error) {
         setTimeout(() => {
           history.push('/teacher/library/');
-          dispatch(listLibraryQuizDetailsClean());
-        }, 2000);
+          /* dispatch(listLibraryQuizDetailsClean()); */
+        }, 1000);
       }
     }
     return () => {
       dispatch(quizUpdateClean());
       setShow(false);
     };
-  }, [dispatch, userInfo, id, quiz, history, error]);
+  }, [dispatch, id, quiz, history, error]);
 
   const updateHandler = () => {
     const questions_otp = quiz.questions_otp;
@@ -107,13 +110,13 @@ export default function QuizEdit({ match }) {
     setShow(true);
     setTimeout(() => {
       setShow(false);
-    }, 2000);
+    }, 1300);
   };
 
   const backHandler = () => {
     history.push('/admin/quizzes/');
-    dispatch(listLibraryQuizDetailsClean());
-    dispatch(quizUpdateClean());
+    /* dispatch(listLibraryQuizDetailsClean());
+    dispatch(quizUpdateClean()); */
   };
 
   return (

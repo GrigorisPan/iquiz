@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Hidden from '@material-ui/core/Hidden';
+
+import Timer from '../../../game/components/Timer';
 
 const useStyles = makeStyles((theme) => ({
   specialText: {
@@ -27,14 +28,20 @@ const useStyles = makeStyles((theme) => ({
 const options = ['A', 'B', 'C', 'D', 'E'];
 const colorArray = ['#2f6dae', '#2c9ca6', '#eca82c', '#ba2f47', '#66994D'];
 
-export function FillerCard() {
+export function FillerCard({ nextQuestionHandler, setShowCorrect }) {
   const classes = useStyles();
-  const theme = useTheme();
 
-  const matchesXS = useMediaQuery(theme.breakpoints.down('sm'));
+  const [timeLeft, setTimeLeft] = useState(100);
 
   const liveGame = useSelector((state) => state.liveGame);
   const { chartBars, fillerSlide } = liveGame;
+
+  useEffect(() => {
+    if (timeLeft < 0) {
+      setShowCorrect();
+      nextQuestionHandler();
+    }
+  });
 
   return (
     <Card elevation={9} className={classes.root}>
@@ -45,11 +52,12 @@ export function FillerCard() {
               <Typography
                 gutterBottom
                 variant='h4'
-                style={{ color: '#f0f0f0', margin: '1em' }}
+                style={{ color: '#f0f0f0', margin: '0.5em' }}
               >
-                {fillerSlide ? fillerSlide : 'Δεν υπάρχουν στατιστικά'}
+                {fillerSlide ? fillerSlide : 'Δεν απάντησε κάνεις'}
               </Typography>
             </Grid>
+            {/* </Grid> */}
           </CardContent>
         </Grid>
         {chartBars && (
@@ -102,6 +110,17 @@ export function FillerCard() {
             </CardContent>
           </Grid>
         )}
+        <Grid item container justify='center'>
+          <Grid item container direction='column' sm={12} md={8}>
+            <CardContent>
+              <Timer
+                timeLeft={timeLeft}
+                setTimeLeft={setTimeLeft}
+                page='fillerSlideTimer'
+              />
+            </CardContent>
+          </Grid>
+        </Grid>
       </Grid>
     </Card>
   );

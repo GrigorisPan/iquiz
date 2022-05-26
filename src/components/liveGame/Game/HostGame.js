@@ -54,7 +54,6 @@ export default function HostGame() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const liveGame = useSelector((state) => state.liveGame);
@@ -175,7 +174,12 @@ export default function HostGame() {
               variant={matchesMD ? 'h4' : 'h3'}
               style={{ color: '#fff' }}
             >
-              {question.data[0].theQuestion}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `${question.data[0].theQuestion}`,
+                  /* __html: `Ερώτηση<br><img src="https://picsum.photos/200"/>`, */
+                }}
+              ></div>
             </Typography>
           </Grid>
           <Grid item container lg={12} xl={9} justify='space-between'>
@@ -194,7 +198,9 @@ export default function HostGame() {
           </Grid>
           {showCorrect && (
             <Grid item container md={6} justify='center'>
-              <Message severity='success'>{question.data[0].correct}</Message>
+              <Message>
+                Η σωστή απάντηση είναι το {question.data[0].correct}
+              </Message>
             </Grid>
           )}
           {
@@ -233,7 +239,12 @@ export default function HostGame() {
         </>
       ) : (
         <Grid item container justify='center' sm={12} md={10} lg={12}>
-          {<MemoizedFillerCard />}
+          {
+            <MemoizedFillerCard
+              nextQuestionHandler={nextQuestionHandler}
+              setShowCorrect={setShowCorrect}
+            />
+          }
           <Grid item container justify={matchesMD ? 'center' : 'space-around'}>
             <Button
               variant='contained'

@@ -182,8 +182,8 @@ export default function InfoClassSt() {
                       </Typography>
                       <Divider />
                       {suggest.map((quiz, i) => (
-                        <>
-                          <ListItem key={quiz.quiz_id}>
+                        <React.Fragment key={quiz.quiz_id}>
+                          <ListItem>
                             <Typography
                               key={i}
                               gutterBottom
@@ -193,7 +193,7 @@ export default function InfoClassSt() {
                             </Typography>
                           </ListItem>
                           <Divider />
-                        </>
+                        </React.Fragment>
                       ))}
                     </List>
                   </Grid>

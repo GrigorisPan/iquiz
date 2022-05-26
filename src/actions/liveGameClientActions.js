@@ -152,10 +152,12 @@ export const playerJoinGame = (socket) => (dispatch, getState) => {
 
   //If the host disconnects, then the player is booted to main screen
   socket.on('hostDisconnect', function () {
+    socket.disconnect();
     dispatch({
       type: PLAYER_JOIN_GAME_FAIL,
       payload: `Ο καθηγητής έχει αποσυνδεθεί`,
     });
+    window.location.href = '/livegame/landing';
   });
 
   socket.on('questionOver', function (data) {
